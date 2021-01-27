@@ -1,0 +1,211 @@
+# Felix' set of helpful git aliases.
+# Include by adding this to ~/.gitconfig:
+#
+# [include]
+# 	path = .gitconfig-aliases
+#
+
+[alias]
+	alias = "!sh -c '[ $# = 2 ] && git config --global alias.\"$1\" \"$2\" && exit 0 || echo \"usage: git alias <new alias> <original command>\" >&2 && exit 1' -"
+#	aliases = config --get-regex \"alias\\.\"
+	aliases = ! git config --get-regexp 'alias.*' | sed 's/[ ]/ = /'
+
+	new = !sh -c 'git log $1@{1}..$1@{0} "$@"'
+	s  = status
+	ss = status -s
+	ssu = status -s -uno
+	shst = show --stat
+	shstw= show --stat=227
+	show-ws = show --ignore-space-at-eol
+
+	diff-file-counts = ! echo "Overall changes:" && git diff --name-status | wc -l  &&  echo "Modified:" && git diff --name-status --diff-filter=M | wc -l  &&  echo "Deleted:" && git diff --name-status --diff-filter=D | wc -l  &&  echo "Added:" && git diff --name-status --diff-filter=A | wc -l  &&  echo "Remaining:" && git diff --name-status --diff-filter=mda | wc -l
+	diff-file-counts-staged = ! echo "Overall changes:" && git diff --name-status --staged | wc -l  &&  echo "Modified:" && git diff --name-status --staged --diff-filter=M | wc -l  &&  echo "Deleted:" && git diff --name-status --staged --diff-filter=D | wc -l  &&  echo "Added:" && git diff --name-status --staged --diff-filter=A | wc -l  &&  echo "Remaining:" && git diff --name-status --staged --diff-filter=mda | wc -l
+
+	d    = diff
+	dd   = diff          --dirstat=0
+	ds   = diff --staged
+	dsd  = diff --staged --dirstat=0
+	dss  = diff --staged --stat
+	dssw = diff --staged --stat=227
+	dst  = diff          --stat
+	dstw = diff          --stat=227
+	dwu  = diff                     --word-diff --unified=0
+	dswu = diff --staged            --word-diff --unified=0
+	dcw  = diff                     --color-words
+	dcwc = diff                     --color-words=.
+	dcww = diff                     --color-words='[A-z_0-9][A-z_0-9]*'
+	dscw = diff --staged            --color-words
+	dscwc = diff --staged            --color-words=.
+	dscww = diff --staged            --color-words='[A-z_0-9][A-z_0-9]*'
+
+	df   = diff  *.c *.cpp *.h *.hpp *.ino
+
+	ssd  = !" echo staged: && git ds --dirstat=0  ; echo not staged: && git d --dirstat=0"
+	sss  = !" echo staged: && git dss  ; echo not staged: && git dst "
+	sssw = !" echo staged: && git dssw ; echo not staged: && git dstw"
+
+	l    = log --max-count=30  --oneline --decorate --graph
+	ll   = log                 --oneline --decorate --graph
+	ls   = log --max-count=30  --oneline --decorate --graph --stat
+	lsw  = log --max-count=30  --oneline --decorate --graph --stat=227
+	lG   = log --max-count=30  --oneline --decorate
+	lGs  = log --max-count=30  --oneline --decorate         --stat
+	lp   = log --max-count=30   --pretty --decorate --graph
+	lpG  = log --max-count=30   --pretty --decorate
+	lr   = log --max-count=30  --oneline --decorate --graph              --source            --remotes         HEAD
+	lb   = log --max-count=31  --oneline --decorate --graph              --source --branches                   HEAD
+	lbr  = log --max-count=31  --oneline --decorate --graph              --source --branches --remotes         HEAD
+	lbt  = log --max-count=31  --oneline --decorate --graph              --source --branches           --tags  HEAD
+	lbd  = log --max-count=31  --oneline --decorate --graph --date-order --source --branches --remotes --tags  HEAD
+	lbn  = log --max-count=31  --oneline --decorate --graph                       --branches --remotes --tags  HEAD
+	lbs  = log --max-count=31  --oneline --decorate --graph --stat       --source --branches --remotes --tags  HEAD
+	lbsn = log --max-count=31  --oneline --decorate --graph --stat                --branches --remotes --tags  HEAD
+	lbsw = log --max-count=31  --oneline --decorate --graph --stat=227   --source --branches --remotes --tags  HEAD
+	lbG  = log --max-count=31  --oneline --decorate                      --source --branches --remotes --tags  HEAD
+	lpb  = log --max-count=31   --pretty --decorate --graph              --source --branches --remotes --tags  HEAD
+	lpbG = log --max-count=31   --pretty --decorate                      --source --branches --remotes --tags  HEAD
+	lbl   = log                --oneline --decorate --graph              --source --branches                   HEAD
+	lbrl  = log                --oneline --decorate --graph              --source --branches --remotes         HEAD
+	lbtl  = log                --oneline --decorate --graph              --source --branches           --tags  HEAD
+	lbnl  = log                --oneline --decorate --graph                       --branches --remotes --tags  HEAD
+	lbsl  = log                --oneline --decorate --graph --stat       --source --branches --remotes --tags  HEAD
+	lbsnl = log                --oneline --decorate --graph --stat                --branches --remotes --tags  HEAD
+	lbswl = log                --oneline --decorate --graph --stat=227   --source --branches --remotes --tags  HEAD
+	lbGl  = log                --oneline --decorate                      --source --branches --remotes --tags  HEAD
+	lpbl  = log                 --pretty --decorate --graph              --source --branches --remotes --tags  HEAD
+	lpbGl = log                 --pretty --decorate                      --source --branches --remotes --tags  HEAD
+	lt    = log                --oneline                                                                         --simplify-by-decoration
+	ltb   = log                --oneline            --graph                       --branches                     --simplify-by-decoration
+	ltt   = log                --oneline            --graph                                            --tags    --simplify-by-decoration
+	ltbt  = log                --oneline            --graph                       --branches           --tags    --simplify-by-decoration
+	ltr   = log                --oneline                                                     --remotes           --simplify-by-decoration
+	ltbr  = log                --oneline            --graph                       --branches --remotes           --simplify-by-decoration
+	lttr  = log                --oneline            --graph                                  --remotes --tags    --simplify-by-decoration
+	ltbtr = log                --oneline            --graph                       --branches --remotes --tags    --simplify-by-decoration
+	l1    = log --oneline --decorate -1
+	blo   = log --oneline --decorate                    FETCH_HEAD..HEAD  #--relative=XX/YY/
+#	blg   = log --oneline --decorate --graph            FETCH_HEAD..HEAD  #--relative=XX/YY/
+#	bls   = log --oneline --decorate         --stat     FETCH_HEAD..HEAD  #--relative=XX/YY/
+#	blsw  = log --oneline --decorate         --stat=227 FETCH_HEAD..HEAD  #--relative=XX/YY/
+#	blsg  = log --oneline --decorate --graph --stat     FETCH_HEAD..HEAD  #--relative=XX/YY/
+#	blsgw = log --oneline --decorate --graph --stat=227 FETCH_HEAD..HEAD  #--relative=XX/YY/
+	bl    = log --oneline --decorate                    @{u}..HEAD  #--relative=XX/YY/
+	blg   = log --oneline --decorate --graph            @{u}..HEAD  #--relative=XX/YY/
+	bls   = log --oneline --decorate         --stat     @{u}..HEAD  #--relative=XX/YY/
+	blsw  = log --oneline --decorate         --stat=227 @{u}..HEAD  #--relative=XX/YY/
+	blsg  = log --oneline --decorate --graph --stat     @{u}..HEAD  #--relative=XX/YY/
+	blsgw = log --oneline --decorate --graph --stat=227 @{u}..HEAD  #--relative=XX/YY/
+	pl    = log --oneline --decorate                    @{u}...HEAD   #--max-count=30   #--relative=XX/YY/
+	plg   = log --oneline --decorate --graph            @{u}...HEAD   #--max-count=30   #--relative=XX/YY/
+	pls   = log --oneline --decorate         --stat     @{u}...HEAD   #--max-count=30   #--relative=XX/YY/
+	plsw  = log --oneline --decorate         --stat=227 @{u}...HEAD   #--max-count=30   #--relative=XX/YY/
+	plsg  = log --oneline --decorate --graph --stat     @{u}...HEAD   #--max-count=30   #--relative=XX/YY/
+	plsgw = log --oneline --decorate --graph --stat=227 @{u}...HEAD   #--max-count=30   #--relative=XX/YY/
+
+	sl  = stash list
+	stl = stash list
+	ssp = stash show -p
+	ssh = stash show
+	stp = stash pop
+	std = stash drop
+	sta = stash apply
+
+	p = stage --patch
+	ps = stage -p *.c *.cpp *.h *.hpp *.ino
+	ul = add -u .
+	amend = commit --amend
+	ri   = rebase --interactive
+	riaa = rebase --interactive --autostash --autosquash
+	ra   = rebase               --autostash
+	raa  = rebase               --autostash --autosquash
+	pura = pull --rebase --autostash  --verbose --stat
+	puri = pull --rebase=interactive
+	pupu = ! git pull --verbose --stat && git push --verbose --progress
+	purapu = ! git pura && git push --verbose --progress
+	mff = merge --ff-only
+	mt = mergetool
+
+	us = up-stat
+	usd = up-stat-dir
+	up-stat = ! echo "Details:" && git plsgw  &&  echo "Combined:" && git dstw HEAD...@{u} --stat=200
+	up-stat-dir = ! echo "Details Dirstat:" && git plg --dirstat=0  &&  echo "Combined Dirstat:" && git d HEAD...@{u} --dirstat=0
+	fetch-stat = ! git fetch && git up-stat
+
+	b   = branch
+	bv  = branch -l -v
+	bvv = branch -l -vv
+	bvvb = ! git bvv --color | grep --color -e ': gone' -e 'behind' -e ''
+	bvva = ! git bvv --color | grep --color -e ': gone' -e 'ahead' -e ''
+
+	bvs  = branch --format='%(refname:short)'
+	bvsa = branch --all --format='%(refname:short)'
+	bvsr = branch --remotes --format='%(refname:short)'
+
+	git = !git
+	co = checkout
+	cod = checkout --detach
+
+	sw = switch
+	cp = cherry-pick
+	wl = worktree list
+
+	fetch = fetch -v
+
+	# ignoring known files:
+	# git update-index --skip-worktree path/file.cfg
+	# un-ignore:
+	# git update-index --no-skip-worktree path/file.cfg
+	skip = update-index --skip-worktree
+	unskip = update-index --no-skip-worktree
+	# list changes in ignored files:
+	ls-ignored-changes = !git ls-files -v | grep ^S | awk '{print $2}'
+	ls-skipped = !git ls-files -v | grep '^S'
+	# skip all files shown by git status - carful!!
+	skip-all-local-changes-careful = !git ss | cut -c 3-  | xargs -n 1 --verbose  git skip
+
+
+	tags = !"git for-each-ref  --sort=taggerdate  --format '%(tag)_,,,_%(taggerdate:raw)_,,,_%(taggername)_,,,_%(subject)' refs/tags | awk 'BEGIN { FS = \"_,,,_\"  } ; { t=strftime(\"%Y-%m-%d  %H:%M\",$2); printf \"%-20s %-18s %-25s %s\\n\", t, $1, $4, $3  }'"
+
+	update-sparse = read-tree -mu HEAD
+
+	lhist = log --graph --date-order --date=short --pretty=format:'%C(auto)%h%d %C(reset)%s %C(bold blue)%ce %C(reset)%C(green)%cr (%cd)'
+	# from Slipp D. Thompson
+	lh1 = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)%C(auto)%d%C(reset)'
+	lh2 = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset)%C(auto)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)'
+	lh3 = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%aD%C(reset) %C(bold green)(%ar)%C(reset) %C(bold cyan)(committed: %cD)%C(reset) %C(auto)%d%C(reset)%n''          %C(white)%s%C(reset)%n''          %C(dim white)- %an <%ae> %C(reset) %C(dim white)(committer: %cn <%ce>)%C(reset)'
+	lh1a = lh1 --all
+	lh2a = lh2 --all
+	lh3a = lh3 --all
+
+	aliasshelltest = ! echo x $1 x  &&  echo y $2 y && echo z $3 z
+	tag-n-push = !" git tag $1  ;  git tag -l $1  &&  git push -v jenkins $1  &&  touch ./my-built-tags/$1  #; echo done. rest: "
+
+	proxy-disable = !" ( git config --global http.proxy-NOT $(git config --get http.proxy    )  &&  git config --global --unset http.proxy     ) ;  echo Proxy: && git config --default NULL --get http.proxy "
+	proxy-enable  = !" ( git config --global http.proxy     $(git config --get http.proxy-NOT)  &&  git config --global --unset http.proxy-NOT ) ;  echo Proxy: && git config --default NULL --get http.proxy "
+	proxy-status  = config --get http.proxy
+	# grep returns 0 if _found_ -- 0 = true
+	# proxy-status returns 0 if _found_
+	pu = proxy-update
+#	proxy-update  = ! ( netsh interface show interface | grep VPN | grep -c "Getrennt" && git config --get http.proxy-NOT || git proxy-disable ) || ( git config --get http.proxy || git proxy-enable )
+#	proxy-update  = !" ( netsh interface show interface | grep VPN | grep -c "Getrennt" && git proxy-disable ) || ( git proxy-enable ) "
+#	proxy-update  = !" ( netsh interface show interface | grep VPN | grep "Getrennt" ; NOVPN=$? ; echo $NOVPN ; ( [ $NOVPN -eq 0 ] && echo NO VPN && git config --get http.proxy && echo DISABLING PROXY && git proxy-disable ) || ( [ $NOVPN -ne 0 ] && echo VPN YES && git config --get http.proxy-NOT && echo ENABLING PROXY && git proxy-enable ) ) "
+	proxy-update  = !" VPNSTAT=$(/c/WINDOWS/system32/netsh interface show interface | grep VPN ) ; echo $VPNSTAT ; ( [[ "$VPNSTAT" == *"Getrennt"* ]] && ( echo VPN NO && ( git config --get http.proxy && echo DISABLING PROXY && git proxy-disable ) || echo NO PROXY CHANGE ) ) || ( [[ "$VPNSTAT" == *"Verbunden"* ]] && ( echo VPN YES && ( git config --get http.proxy-NOT && echo ENABLING PROXY && git proxy-enable ) || echo NO PROXY CHANGE ) )"
+
+	fetchp = !" git proxy-update && git fetch || echo ERROR fetchp"
+	fus  = !" git fetch && git up-stat || echo ERROR fus"
+	pfus = !" git fetchp && git up-stat || echo ERROR pfus"
+	pullp = !" git proxy-update && git pull || echo ERROR pushp"
+	pushp = !" git proxy-update && git push || echo ERROR pullp"
+
+	#branchupdate = ! git checkout $1  &&  git pull --rebase y $2 y && echo
+	#branchupdate = ! bash -c git_branch_update
+	#updatebranches = ! bash -c git_update_branches
+	update-all = ! git_update_branches build-preparations local-dev-base usual-debugging future-improvements  permanent-debug-archive
+	replace-branch-with-tag = ! git tag $1 $1  &&  echo Created tag should show up here:  &&  git tag -l $1  &&  git branch -v -D $1  &&  echo done.
+
+	remove-tracked-files = ! git ls-files -z | xargs --null rm
+	remove-tracked-files-verbose = ! git ls-files -z | xargs --null --verbose rm
+	remove-tracked-files-verbose-interactive = ! git ls-files -z | xargs --null --verbose --interactive  rm
+
+
+#	stsh = ! CURRENT=$(git symbolic-ref HEAD) && git symbolic-ref HEAD refs/heads/stash && git commit -a -m stashed && git checkout $CURRENT

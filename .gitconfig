@@ -1,0 +1,89 @@
+# This is Git's per-user configuration file
+
+[include]
+	path = .gitconfig-aliases
+
+[user]
+#	name = Felix Kolbe
+#	email =
+
+[core]
+	autocrlf = false
+	whitespace = cr-at-eol
+
+	editor = \"C:/Program Files (x86)/GitExtensions/GitExtensions.exe\" fileeditor
+#	editor = nano
+#	editor = notepad++  -multiInst -noPlugin -nosession
+# np++ from chocolatey:
+#	editor = notepad++  -multiInst -noPlugin -nosession  --shimgen-waitforexit
+
+[color "diff"]
+	whitespace = blue reverse
+
+[branch]
+	autoSetupRebase = local
+
+[pull]
+#	rebase = false
+#	rebase = true
+
+[fetch]
+#	prune = false
+
+
+[diff]
+	wsErrorHighlight = all
+	algorithm = patience
+	mnemonicPrefix = true
+	guitool = beyondcompare4
+	tool = WinMerge
+	guitool = diffuse
+
+[merge]
+	ff = only
+#	tool = BeyondCompare4
+#	tool = meld
+#	tool = tortoisemerge
+#	tool = WinMerge
+
+[difftool "diffuse"]
+	path = C:/Program Files (x86)/Diffuse/diffuse.exe
+
+[difftool "WinMerge"]
+# working @A
+#	cmd = \"C:/Program Files/WinMerge/WinMergeU.exe\" -e -u -dl \"Old $BASE\" -dr \"New $BASE\" \"$LOCAL\" \"$REMOTE\"
+#	trustExitCode = true
+
+#[difftool "meld"]
+#	path = C:/Program Files (x86)/Meld/Meld.exe
+#	cmd = \"C:/Program Files (x86)/Meld/Meld.exe\" \"$LOCAL\" \"$REMOTE\"
+
+
+[mergetool]
+#	prompt = false
+
+[mergetool "WinMerge"]
+	# https://stackoverflow.com/questions/10713925/how-can-i-make-winmerge-my-git-mergetool/55008972#55008972
+	# WinMerge flag information:
+	#  /e - Allows WinMerge to be closed via a single press of the 'esc' key.
+	#  /u - Prevents WinMerge from logging the files in the recently used list.
+	#  /dl, /dm, and /dl - Descriptions for Left, Middle, and Right panes.
+	#  /o - The output file. Saving ANY pane will output that pane's contents to the output file.
+	cmd = \"C:/Program Files/WinMerge/WinMergeU.exe\" -e -u -dl \"Local\" -dm \"Base\" -dr \"Remote\" \"$LOCAL\" \"$BASE\" \"$REMOTE\" -o \"$MERGED\"
+	trustExitCode = true  # true tells git to accept the output without further prompt
+	keepBackup = false  # false will automatically delete the generated *.orig files.
+	# example call:
+	# WinMergeU.exe -e -u -dl Local -dm Base -dr Remote ./main_LOCAL_2755.c ./main_BASE_2755.c ./main_REMOTE_2755.c -o main.c
+
+#[mergetool "winmerge"]
+##	path = "tools/WinMerge/WinMergeU.exe"
+#	cmd = "tools/WinMerge/WinMergeU.exe" -u -e -dl \"Loca\" -dr \"Remo\" $LOCAL $REMOTE $MERGED
+
+[mergetool "meld"]
+	path = C:/Program Files (x86)/Meld/Meld.exe
+	cmd = \"C:/Program Files (x86)/Meld/Meld.exe\" \"$LOCAL\" \"$BASE\" \"$REMOTE\" --output \"$MERGED\"
+#	cmd = 'tools/Meld_3.18/Meld.exe' $LOCAL $BASE $REMOTE --output=$MERGED
+
+
+[gui]
+	gcwarning = false

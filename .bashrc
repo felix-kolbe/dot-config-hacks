@@ -102,9 +102,8 @@ function make_sub_directories_mad()
 {
   dirs=(*/)
   for dir in "${dirs[@]}"; do
-    pushd $dir
-    mad
-    popd
+    pushd $dir  &&  mad
+    popd  ||  return
   done
 }
 
@@ -250,14 +249,14 @@ gitdiff_multi_until_different()
   echo Comparing $1 and $branch2:
   git show --summary --pretty=oneline $1 $branch2
 
-  diff -I "commit ......." -I "index ......." --color $3 $4 $5 <(git show $1) <(git show $branch2)  #> /dev/null
+  diff -I 'commit .......' -I 'index .......' --color $3 $4 $5 <(git show $1) <(git show $branch2)  #> /dev/null
   diffstatus=$?
 
   if [[ $diffstatus -eq 1 ]]
   then
-#    diff -I "commit ......." -I "index ......." --color $3 $4 $5 <(git show $1) <(git show $branch2)
+#    diff -I 'commit .......' -I 'index .......' --color $3 $4 $5 <(git show $1) <(git show $branch2)
 #    echo Different! Diff shown above. Stopping.
-    echo 'diff -I "commit ......." -I "index ......." --color $3 $4 $5 <(git show $1) <(git show $branch2)'
+    echo "diff -I 'commit .......' -I 'index .......' --color $3 $4 $5 <(git show $1) <(git show $branch2)"
     echo Different! Call diff with above command. Stopping.
   elif [[ $diffstatus -eq 0 ]]
   then
@@ -277,29 +276,31 @@ gitdiff_multi_until_different()
 
 git_branch_update()
 {
-  git checkout "$1" && git pull --rebase $2
+  git checkout "$1" && git pull --rebase "$2"
   return ${PIPESTATUS[0]}
 }
 
-alias git_update_branches_from_list="git_update_branches \$(cat ../updatelist)"
+alias git_update_branches_from_list="git_update_branches \$(cat updatelist)"
 
 git_update_branches()
 {
-  for branch in $*
+  for branch in "$@"
   do
-    echo $branch
+    echo "$branch"
   done
 
-  for branch in $*
+  for branch in "$@"
   do
     echo "--------------------------------------------------------------------"
     git branch -lvv  $branch  | grep --color behind
+    rv=$?
     # Exit status is 0 if any line is selected, 1 otherwise;
-    if [ $? -eq 0 ]; then
+    if [ $rv -eq 0 ]; then
       #read -p "Update branch '$branch'? Enter or Ctrl-C: " -sr  choice
       #echo  # new line (use with -n 1)
       git checkout $branch && git pull
-      if [ $? -ne 0 ]; then
+      rv=$?
+      if [ $rv -ne 0 ]; then
         echo "Error updating branch '$branch' -> Abort!"
         return $?
       fi
@@ -338,11 +339,13 @@ git_show_recursive_upstream_status()
 
 #  echo "Argument $1 -> Branch '$branch'"
   #upstream=$(git rev-parse --symbolic-full-name $branch@{upstream})
-  upstream=$(git rev-parse --abbrev-ref $branch@{upstream})
-  if [ $? -eq 0 ]; then
+  upstream=$(git rev-parse --abbrev-ref "$branch@{upstream}")
+  rv=$?
+  if [ $rv -eq 0 ]; then
 #    echo "Branch '$branch' has upstream '$upstream'."
     git branch -lvv  --color $branch  | grep --color -e 'behind' -e ''
-    if [ $? -eq 0 ]; then
+    rv=$?
+    if [ $rv -eq 0 ]; then
     git_show_recursive_upstream_status $upstream
     fi
   else
@@ -360,7 +363,8 @@ git_show_recursive_branch_dependencies()
   branch=$(git rev-parse --abbrev-ref --default HEAD $1)
 #  echo "Argument $1 -> Branch '$branch'"
   git branch -lvv  | grep --color '\['$branch
-  if [ $? -eq 0 ]; then
+  rv=$?
+  if [ $rv -eq 0 ]; then
     git for-each-ref --format='%(upstream:short) < %(refname:short)' refs/heads | grep :$branch
     for downstream in $(git for-each-ref --format='%(refname:short):%(upstream:short)' refs/heads | grep :$branch | sed "s/\(.\+\):.\+/\1/")
     do
@@ -383,20 +387,22 @@ git_update_recursive_branch_dependencies_prompt()
   branch=$(git rev-parse --abbrev-ref --default HEAD $1)
 #  echo "Argument $1 -> Branch '$branch'"
   git branch -lvv  | grep --color '\['$branch
-  if [ $? -eq 0 ]; then
+  rv=$?
+  if [ $rv -eq 0 ]; then
 #    git for-each-ref --format='%(upstream:short) < %(refname:short)' refs/heads | grep $branch
     for downstream in $(git for-each-ref --format='%(refname:short):%(upstream:short)' refs/heads | grep :$branch | sed "s/\(.\+\):.\+/\1/")
     do
       echo Check: $2 $downstream
 
       git branch -lvv $downstream | grep --color ' behind '
-      if [ $? -ne 0 ]; then
-        echo "Branch '"$downstream"' is up to date."
+      rv=$?
+      if [ $rv -ne 0 ]; then
+        echo "Branch '$downstream' is up to date."
       else
-        git l -55 $downstream@{U} $downstream
+        git l -55 "$downstream@{U}" $downstream
         # TODO: Add last fetch head to list command to make full downstream path print (if this works) in case of too much new in upstream
 
-        read -p "Update branch '"$downstream"'? Put, w/o Enter, y/u|n/s|q (for yes/update|no/skip|quit): " -sr -n 1 choice
+        read -p "Update branch '$downstream'? Put, w/o Enter, y/u|n/s|q (for yes/update|no/skip|quit): " -sr -n 1 choice
         #echo  # new line (use with -n 1)
         case "$choice" in
           y|u )
@@ -404,7 +410,7 @@ git_update_recursive_branch_dependencies_prompt()
             git checkout $downstream && git pull #--dry-run
             rv=$?
             if [ $rv -ne 0 ]; then
-              echo "Error: "$rv" -> Abort!"
+              echo "Error: '$rv' -> Abort!"
               return $rv
             fi
             ;;
@@ -431,13 +437,13 @@ git_update_recursive_branch_dependencies_prompt()
       git_update_recursive_branch_dependencies_prompt $downstream ". $2"
       rv=$?
       if [ $rv -ne 0 ]; then
-        echo "Error "$rv" in recursive call -> Abort."
+        echo "Error '$rv' in recursive call -> Abort."
         return $rv
       fi
     done
 
   else
-    echo "Branch '"$branch"' has no dependent branches."
+    echo "Branch '$branch' has no dependent branches."
   fi
 
   # print final list only if we are the initial call, not recursive

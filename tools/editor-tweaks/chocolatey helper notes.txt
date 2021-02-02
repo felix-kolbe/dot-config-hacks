@@ -1,0 +1,2 @@
+generate NP++ shim not done properly by chocolatey package:
+C:\ProgramData\chocolatey\tools\shimgen.exe -o "C:\ProgramData\chocolatey\bin\notepad++.exe" -p "c:\program files (x86)\notepad++\notepad++.exe" -i "C:\Program Files (x86)\Notepad++\notepad++.exe"

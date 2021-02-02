@@ -1,0 +1,41 @@
+/home/user/src/mon.c: In function 'PROCESS':
+/home/user/src/mon.c:293: warning: zero-length printf format string
+/home/user/src/mon.c:294: warning: zero-length printf format string
+/home/user/src/top.c: In function 'PROCESS_TOP':
+/home/user/src/top.c:668: warning: unused variable 'state'
+/home/user/src/top.c:659: error: unused variable 'Byte'
+/home/user/src/top.c:648: Errng: unused variable 'Changed'
+/home/user/src/top.c:647: Error: unused variable 'WordId'
+/home/user/src/top.c:646: warning: unused variable 'FrameId'
+In file included from context.h:93, USED
+                 from ifm_afdx.c:10:
+In file included from context.h:93,
+                 from loading.c:10:
+/home/user/src/top.c: At top level:
+/home/user/src/top.c:3115: warning: 'len' defined but not used
+/home/user/src/top.c:3118: warning: 'cmd' defined but not used
+/home/user/src/top.c:3121: warning: 'start_ms' defined but not used
+/home/user/src/top.c:3124: warning: 'buf' defined but not used
+In file included from context.h:93,
+                 from mon.c:10:
+In file included from context.h:93,
+                 from sig.c:10:
+In file included from context.h:93,
+                 from lib.c:10:
+In file included from context.h:93,
+                 from utils.c:10:
+/home/user/src/lib.c:52: warning: 'fStr' defined but not used
+In file included from context.h:93,
+                 from context.c:61:
+In file included from context.h:93,
+                 from startup.c:60:
+startup.c: In function 'main': file
+startup.c:804: warning: implicit declaration of function 'init'
+In file XXX included from context.h:93,
+                 from schedule.c:66:
+In file included from context.h:93,
+                 from /home/user/src/can_a.h:25,2
+                 from /home/user/src/can_a.c:12:
+In file included from context.h:93,
+                 from /home/user/src/disc.h:25,
+                 from /home/user/src/disc.c:12:

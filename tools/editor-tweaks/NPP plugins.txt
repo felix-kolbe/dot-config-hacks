@@ -1,0 +1,57 @@
+old list:
+Save as admin
+Compare
+JSON Viewer
+MarkdownViewer++
+NotepadStarterPlugin
+HEX-Editor
+Linefilter2
+Location Navigate
+NavigateTo
+NppAUtoIndent
+PyNPP
+TextFX
+Window Manager
+XML
+
+NppFavorites
+NppJumpList
+NppQrCode
+
+
+Not installable (downloaded empty):
+LocationNavigate_v0.4.7.7.zip
+NavigateTo_x32.zip
+NppAutoIndent_1_2_dll.zip
+NppFavorites_1.0.0.1.21_x86.zip
+NppJumpList.1.2.2.bin.zip
+NppQrCode-0.0.0.1-x32.zip
+PyNPP.dll.zip
+TextFX.v0.26.unicode.bin.zip
+WindowManager_1_2_2_UNI_dll.zip
+Xml.Tools.2.4.11.0.x86.Unicode.zip
+
+
+NppGTags
+
+
+end of 2020:
+
+ComparePlugin\
+Config\
+HexEditor\
+linefilter2\
+MarkdownViewerPlusPlus\
+mimeTools\
+NavigateTo\
+NppAutoIndent\
+NppConverter\
+NppExport\
+NppFavorites\
+NPPJSONViewer\
+NppJumpList\
+NppQrCode32\
+NppTextFX\
+PyNPP\
+RunMe\
+XMLTools\

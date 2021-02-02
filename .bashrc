@@ -141,10 +141,10 @@ alias fetchllb="git fetch local  &&  git lb"
 alias git_gc_in_all_subdir_repos="find . -type f -name .git -okdir git gc \;"
 
 
+# show stash by index given via parameter
 git_stash_show()
 {
   git show "stash@{$1}"
-  return ${PIPESTATUS[0]}
 }
 
 git-diff-file-changes()
@@ -161,7 +161,6 @@ gitdiff()
 {
   echo "diff --color $3 $4 $5 <(git show $1) <(git show $2)"
   diff --color $3 $4 $5 <(git show $1) <(git show $2)
-  return ${PIPESTATUS[0]}
 }
 
 # in some environments above <( ) piping is not working
@@ -172,7 +171,6 @@ gitdiff_nopiping()
   git show $2  >  tmp_gitdifftemp_2
   diff --color $3 $4 $5 tmp_gitdifftemp_1 tmp_gitdifftemp_2
   rm tmp_gitdifftemp_1 tmp_gitdifftemp_2
-  return ${PIPESTATUS[0]}
 }
 
 
@@ -207,7 +205,6 @@ gitdiff_multi()
 
   #git l -1 $1 $2
   #git show --summary --pretty=oneline $1 $2
-  return ${PIPESTATUS[0]}
 )
 
 gitdiff_multi_until_equal()
@@ -274,6 +271,7 @@ gitdiff_multi_until_different()
   fi
 )
 
+# deprecated?
 git_branch_update()
 {
   git checkout "$1" && git pull --rebase "$2"
@@ -325,8 +323,6 @@ git_update_branches()
 
   echo "List of branches still being behind their upstream:"
   git branch -lvv | grep --color behind
-
-  return ${PIPESTATUS[0]}
 }
 
 

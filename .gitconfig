@@ -1,19 +1,20 @@
 # This is Git's per-user configuration file
 
 [include]
-	path = .gitconfig-aliases
+	path = dot-config-hacks/.gitconfig-aliases
 
 [user]
 #	name = Felix Kolbe
 #	email =
 
 [core]
-	autocrlf = false
+	autocrlf = true
 	whitespace = cr-at-eol
 
 	editor = \"C:/Program Files (x86)/GitExtensions/GitExtensions.exe\" fileeditor
 #	editor = nano
 #	editor = notepad++  -multiInst -noPlugin -nosession
+#	editor = \"C:/Program Files (x86)/Notepad++/notepad++.exe\"  -multiInst -noPlugin -nosession
 # np++ from chocolatey:
 #	editor = notepad++  -multiInst -noPlugin -nosession  --shimgen-waitforexit
 
@@ -30,24 +31,31 @@
 [fetch]
 #	prune = false
 
+[rebase]
+	missingCommitsCheck = warn
+	abbreviateCommands = true
+
 
 [diff]
 	wsErrorHighlight = all
 	algorithm = patience
 	mnemonicPrefix = true
-	guitool = beyondcompare4
+	guitool = bc4
+#	guitool = diffuse
 	tool = WinMerge
-	guitool = diffuse
 
 [merge]
 	ff = only
-#	tool = BeyondCompare4
+#	tool = bc4
 #	tool = meld
 #	tool = tortoisemerge
 #	tool = WinMerge
 
 [difftool "diffuse"]
 	path = C:/Program Files (x86)/Diffuse/diffuse.exe
+
+[difftool "bc4"]
+	path = "C:/Users/%%%USER%%%/AppData/Local/Beyond Compare 4/BComp.exe"
 
 [difftool "WinMerge"]
 # working @A
@@ -84,6 +92,9 @@
 	cmd = \"C:/Program Files (x86)/Meld/Meld.exe\" \"$LOCAL\" \"$BASE\" \"$REMOTE\" --output \"$MERGED\"
 #	cmd = 'tools/Meld_3.18/Meld.exe' $LOCAL $BASE $REMOTE --output=$MERGED
 
+
+[mergetool "bc4"]
+	path = "C:/Users/%%%USER%%%/AppData/Local/Beyond Compare 4/BComp.exe"
 
 [gui]
 	gcwarning = false

@@ -18,6 +18,7 @@ export PATH=$PATH:"/c/Users/${USER}/AppData/Local/Beyond Compare 4"
 alias tgit=TortoiseGitProc
 alias notepad++='"C:/Program Files (x86)/Notepad++/notepad++.exe"'
 alias npp=notepad++
+alias npp-single='"C:/Program Files (x86)/Notepad++/notepad++.exe"  -multiInst -noPlugin -nosession'
 alias meld='"C:\Program Files (x86)\Meld\Meld.exe"'
 
 #### CLI tools
@@ -25,15 +26,12 @@ alias meld='"C:\Program Files (x86)\Meld\Meld.exe"'
 alias colordiff="diff --color"
 alias l >/dev/null 2>&1 || alias l='ls -CF'
 alias ll >/dev/null 2>&1 || alias ll="ls -goh"
-
+alias pipe-remove-colors='sed -r "s/\x1B\[(([0-9]+)(;[0-9]+)*)?[m,K,H,f,J]//g"'
 
 
 ##### cd commands
 
 alias cd_wireshark="cd c:\\\Users\\\${USER}\\\AppData\\\Roaming\\\Wireshark"
-#alias cd_wiki="cd '/c/Users/xxx/yyy/.wiki/'"
-#alias cd_lmc="cd c:/Users/xxx/lmc_src/ && black"
-
 
 
 
@@ -45,6 +43,10 @@ alias findkeeps="find . -name '*.keep'"
 alias findkeepsdelete="find . -name '*.keep' -print -delete"
 
 alias find-commented-lines="find . -name '*.c' | xargs grep --color -Hn \"^ *//\""
+
+alias find_defines_sorted='find source/ | xargs grep --no-filename "#define" | sort'
+# alias find_defines_repeated='find source/ -type f | xargs grep --no-filename -E "^[\t ]*#define" | cut -d " " -f 2 | sort | uniq --repeated'
+# ^ now a separate script
 
 
 #alias find_empty_directories_recursively_1_remove="find . -empty -type d | xargs  rmdir -v --ignore-fail-on-non-empty"
@@ -58,6 +60,67 @@ alias find-commented-lines="find . -name '*.c' | xargs grep --color -Hn \"^ *//\
 alias find_empty_directories_recursively="find ./* -depth -not -path '*.git*' -type d -empty -print"
 alias find_empty_directories_recursively_remove="find ./* -depth -not -path '*.git*' -type d -empty -exec rmdir -v {} \;"
 alias find_empty_directories_recursively_remove_document="find ./* -depth -not -path '*.git*' -type d -empty -exec rmdir -v {} \;  > __empty_dirs_removed && wc -l __empty_dirs_removed"
+
+
+function find-files-wo-newline-at-end-of-file1()
+{
+  find . -type f -print0 | xargs -0 -L1 bash -c 'test "$(tail -c 1 "$0")" && echo "No new line at end of $0"'
+}
+function find-files-wo-newline-at-end-of-file1ch()
+{
+  find . -type f \( -name '*.c' -o -name '*.h' \) -print0 | xargs -0 -L1 bash -c 'test "$(tail -c 1 "$0")" && echo "No new line at end of $0"'
+}
+function find-files-wo-newline-at-end-of-file2()
+{
+  find . -type f -exec sh -c '[ -z "$(sed -n "\$p" "$1")" ]' _ {} \; -print
+}
+function find-files-wo-newline-at-end-of-file1ch()
+{
+  find . -type f \( -name '*.c' -o -name '*.h' \) -exec sh -c '[ -z "$(sed -n "\$p" "$1")" ]' _ {} \; -print
+}
+
+
+function exec-in-subdirs()
+{
+  echo "------------------"
+  echo "$@"
+  dirs=(*/)
+  for dir in "${dirs[@]}"; do
+    echo "------------------"
+    echo ">>> $dir"
+    pushd "$dir" > /dev/null  ||  return
+    eval "$@"
+    popd > /dev/null  ||  return
+  done
+}
+
+
+function svn-subdirs()
+{
+  #exec-in-subdirs svn "$@"
+  echo "------------------"
+  dirs=(*/)
+  #dirs=(find . -maxdepth 2 -type d -name .svn -printf "%h ")
+  echo "$dirs"
+  for dir in "${dirs[@]}"; do
+    #echo "------------------"
+    #echo ">>> $dir"
+    pushd "$dir" > /dev/null  ||  return
+    if [ -d ".svn" ]; then
+      echo "------------------"
+      echo ">>> $dir"
+      (eval svn "$@")
+    #else
+    #  echo "Skipped, no .svn"
+    fi
+    popd > /dev/null  ||  return
+  done
+}
+
+alias svn-subdirs-info='find . -maxdepth 2 -type d -name .svn -printf "%h\n" | xargs svn info | highlight /branches/'
+alias svn-subdirs-branches='find . -maxdepth 2 -type d -name .svn -printf "%h\n" | xargs svn info | grep -E "^(Path|Relative URL)" | highlight /branches/'
+alias svn-subdirs-summary-nonbin='svn-subdirs diff --summarize | grep -v "   abs" | grep -v " CANape" | grep -v "pitlist.lst"'
+alias svn-subdirs-diff-src-tools='svn-subdirs diff dev_tool/ pc_lint/ source/'
 
 
 #### highlighter
@@ -134,12 +197,37 @@ export GIT_PS1_SHOWUPSTREAM=1
 
 alias g="git"
 alias qgit="git"
+alias git-no-sll="git -c http.sslVerify=false"
+alias git-editor-npp="git -c core.editor='notepad++ -multiInst -noPlugin -nosession'"
+alias git-editor-code='git -c core.editor="code --new-window --wait"'
+
 
 alias fetchlb="git fetch  &&  git lb"
 alias fetchllb="git fetch local  &&  git lb"
 
 alias git_gc_in_all_subdir_repos="find . -type f -name .git -okdir git gc \;"
 
+alias git_most_modified_six_months="git log --since 6.months.ago --numstat |
+  awk '/^[0-9-]+/{ print $NF}' |
+  sort |
+  uniq -c |
+  sort -nr |
+  head"
+
+git-log-HEAD-and-branch()
+{
+  git ll HEAD $1 $* ^$(git merge-base HEAD $1)^
+}
+
+git-log-two-branches()
+{
+  git ll $1 $2 $* ^$(git merge-base $1 $2)^
+}
+
+git-log-branches()
+{
+  git ll $* ^$(git merge-base $*)^
+}
 
 # show stash by index given via parameter
 git_stash_show()
@@ -156,12 +244,33 @@ git-diff-file-changes()
   echo "Remaining:" && git diff --name-status --diff-filter=mda | wc -l
 }
 
-
 gitdiff()
 {
   echo "diff --color $3 $4 $5 <(git show $1) <(git show $2)"
   diff --color $3 $4 $5 <(git show $1) <(git show $2)
 }
+
+gitdiff_command()
+{
+  echo "diff --color $4 $5 <(git $1 $2) <(git $1 $3)"
+  diff --color $4 $5 <(git $1 $2) <(git $1 $3)
+}
+
+gitdiff-with-working()
+{
+  echo "diff --color $3 $4 $5 <(git show $1) <(git diff)"
+  diff --color $4 $5 <(git show $2 $3 $1) <(git diff $2 $3)
+}
+
+gitdiff-with-stage()
+{
+  echo "diff --color $3 $4 $5 <(git show $1) <(git diff --staged)"
+  diff --color $4 $5 <(git show $2 $3 $1) <(git diff --staged $2 $3)
+}
+
+# alias gitdiff-stopped-hash-with-stage='gitdiff-with-stage .git/rebase-merge/stopped-sha'
+alias gitdiff-rebase-head-with-working='gitdiff-with-working REBASE_HEAD'
+alias gitdiff-rebase-head-with-stage='gitdiff-with-stage REBASE_HEAD'
 
 # in some environments above <( ) piping is not working
 gitdiff_nopiping()
@@ -172,6 +281,109 @@ gitdiff_nopiping()
   diff --color $3 $4 $5 tmp_gitdifftemp_1 tmp_gitdifftemp_2
   rm tmp_gitdifftemp_1 tmp_gitdifftemp_2
 }
+
+
+git_history_compare()
+(
+  command=$1
+  branch1=$2
+  # replace 3rd argument by HEAD if not given
+  if [ $# -lt 3 ]; then
+    branch2=$(git rev-parse --abbrev-ref --default HEAD)
+  else
+    branch2=$3
+  fi
+
+  echo Comparing $branch1 and $branch2:
+  git $command --summary --pretty=oneline $branch1 $branch2
+
+  # gitdiff $branch1 $2 > /dev/null
+  #echo "diff --color $4 $5 <(git $command $branch1) <(git $command $2)"
+  diff -I "commit ......." -I "index ......." --color --brief $4 $5 <(git $command $branch1) <(git $command $branch2) #> /dev/null
+  diffstatus=$?
+
+  if [[ $diffstatus -eq 1 ]]
+  then
+    echo Initially different! Continuing until equal.
+    git_history_compare_until_equal $command $(git rev-parse --verify --short $branch1^) $(git rev-parse --verify --short $branch2^) $4 $5
+  elif [[ $diffstatus -eq 0 ]]
+  then
+    echo Initially equal! Continuing until different.
+    git_history_compare_until_different $command $(git rev-parse --verify --short $branch1^) $(git rev-parse --verify --short $branch2^) $4 $5
+  else
+    echo Diff returned error! Abort.
+  fi
+)
+
+git_history_compare_until_equal()
+(
+  command=$1
+  branch1=$2
+  # replace 3rd argument by HEAD if not given
+  if [ $# -lt 3 ]; then
+    branch2=$(git rev-parse --abbrev-ref --default HEAD)
+  else
+    branch2=$3
+  fi
+
+  echo Comparing $branch1 and $branch2:
+  git $command --summary --pretty=oneline $branch1 $branch2
+
+  diff -I "commit ......." -I "index ......." --color --brief $4 $5 <(git $command $branch1) <(git $command $branch2)  > /dev/null
+  diffstatus=$?
+
+  if [[ $diffstatus -eq 1 ]]
+  then
+    echo Different.
+    git_history_compare_until_equal $command $(git rev-parse --verify --short $branch1^) $(git rev-parse --verify --short $branch2^) $4 $5
+  elif [[ $diffstatus -eq 0 ]]
+  then
+    echo Equal!
+  else
+    echo Diff returned error! Abort.
+  fi
+)
+
+git_history_compare_until_different()
+(
+  command=$1
+  branch1=$2
+  # replace 3rd argument by HEAD if not given
+  if [ $# -lt 3 ]; then
+    branch2=$(git rev-parse --abbrev-ref --default HEAD)
+  else
+    branch2=$3
+  fi
+
+  echo Comparing $branch1 and $branch2:
+  git $command --summary --pretty=oneline $branch1 $branch2
+
+  diff -I 'commit .......' -I 'index .......' --color $4 $5 <(git $command $branch1) <(git $command $branch2)  > /dev/null
+  diffstatus=$?
+
+  if [[ $diffstatus -eq 1 ]]
+  then
+#    diff -I 'commit .......' -I 'index .......' --color $4 $5 <(git $command $branch1) <(git $command $branch2)
+#    echo Different! Diff shown above. Stopping.
+    echo "diff -I 'commit .......' -I 'index .......' --color $4 $5 <(git $command $branch1) <(git $command $branch2)"
+    echo Different! Call diff with above command. Stopping.
+  elif [[ $diffstatus -eq 0 ]]
+  then
+
+    if [[ $(git rev-parse --verify --short $branch1) = $(git rev-parse --verify --short $branch2) ]]
+    then
+      echo Identical hashes! Parents will never be different. Stop.
+    else
+      echo Equal.
+      git_history_compare_until_different $command $(git rev-parse --verify --short $branch1^) $(git rev-parse --verify --short $branch2^) $4 $5
+    fi
+
+  else
+    echo Diff returned error! Abort.
+  fi
+)
+
+
 
 
 gitdiff_multi()
@@ -219,7 +431,7 @@ gitdiff_multi_until_equal()
   echo Comparing $1 and $branch2:
   git show --summary --pretty=oneline $1 $branch2
 
-  diff -I "commit ......." -I "index ......." --color --brief $3 $4 $5 <(git show $1) <(git show $branch2)  #> /dev/null
+  diff -I "commit ......." -I "index ......." --color --brief $3 $4 $5 <(git show $1) <(git show $branch2)  > /dev/null
   diffstatus=$?
 
   if [[ $diffstatus -eq 1 ]]
@@ -246,7 +458,7 @@ gitdiff_multi_until_different()
   echo Comparing $1 and $branch2:
   git show --summary --pretty=oneline $1 $branch2
 
-  diff -I 'commit .......' -I 'index .......' --color $3 $4 $5 <(git show $1) <(git show $branch2)  #> /dev/null
+  diff -I 'commit .......' -I 'index .......' --color $3 $4 $5 <(git show $1) <(git show $branch2)  > /dev/null
   diffstatus=$?
 
   if [[ $diffstatus -eq 1 ]]
@@ -621,4 +833,11 @@ function setcolors_acm() {
     echo -ne '\e]10;#FFFFFF\a' #  foreground
     echo -ne '\e]11;#331029\a' #  background
     echo -ne '\e]12;#33EEAE\a' #  cursor
+}
+
+alias grey=setcolors_grey
+function setcolors_grey() {
+    echo -ne '\e]10;#FFFFFF\a' #  foreground
+    echo -ne '\e]11;#221111\a' #  background
+    echo -ne '\e]12;#FF0000\a' #  cursor
 }

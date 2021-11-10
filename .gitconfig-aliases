@@ -14,29 +14,42 @@
 	s  = status
 	ss = status -s
 	ssu = status -s -uno
-	shst = show --stat
-	shstw= show --stat=227
-	show-ws = show --ignore-space-at-eol
 
 	diff-file-counts = ! echo "Overall changes:" && git diff --name-status | wc -l  &&  echo "Modified:" && git diff --name-status --diff-filter=M | wc -l  &&  echo "Deleted:" && git diff --name-status --diff-filter=D | wc -l  &&  echo "Added:" && git diff --name-status --diff-filter=A | wc -l  &&  echo "Remaining:" && git diff --name-status --diff-filter=mda | wc -l
 	diff-file-counts-staged = ! echo "Overall changes:" && git diff --name-status --staged | wc -l  &&  echo "Modified:" && git diff --name-status --staged --diff-filter=M | wc -l  &&  echo "Deleted:" && git diff --name-status --staged --diff-filter=D | wc -l  &&  echo "Added:" && git diff --name-status --staged --diff-filter=A | wc -l  &&  echo "Remaining:" && git diff --name-status --staged --diff-filter=mda | wc -l
 
-	d    = diff
-	dd   = diff          --dirstat=0
-	ds   = diff --staged
-	dsd  = diff --staged --dirstat=0
-	dss  = diff --staged --stat
-	dssw = diff --staged --stat=227
-	dst  = diff          --stat
-	dstw = diff          --stat=227
+	d     = diff
+	dd    = diff          --dirstat=0
+	dst   = diff          --stat
+	dstw  = diff          --stat=227
+	ds    = diff --staged
+	dsd   = diff --staged --dirstat=0
+	dss   = diff --staged --stat
+	dssw  = diff --staged --stat=227
+	dur    = diff                       HEAD @{u}
+	durd   = diff          --dirstat=0  HEAD @{u}
+	durst  = diff          --stat       HEAD @{u}
+	durstw = diff          --stat=227   HEAD @{u}
+	du     = diff                       @{u} HEAD
+	dud    = diff          --dirstat=0  @{u} HEAD
+	dust   = diff          --stat       @{u} HEAD
+	dustw  = diff          --stat=227   @{u} HEAD
+
 	dwu  = diff                     --word-diff --unified=0
 	dswu = diff --staged            --word-diff --unified=0
-	dcw  = diff                     --color-words
-	dcwc = diff                     --color-words=.
-	dcww = diff                     --color-words='[A-z_0-9][A-z_0-9]*'
-	dscw = diff --staged            --color-words
+	dcw   = diff                     --color-words
+	dcwc  = diff                     --color-words=.
+	dcww  = diff                     --color-words='[A-z_0-9][A-z_0-9]*'
+	dscw  = diff --staged            --color-words
 	dscwc = diff --staged            --color-words=.
 	dscww = diff --staged            --color-words='[A-z_0-9][A-z_0-9]*'
+
+	shcw  = show                     --color-words
+	shcwc = show                     --color-words=.
+	shcww = show                     --color-words='[A-z_0-9][A-z_0-9]*'
+	shst  = show --stat
+	shstw = show --stat=227
+	show-ws = show --ignore-space-at-eol
 
 	df   = diff  *.c *.cpp *.h *.hpp *.ino
 
@@ -83,24 +96,38 @@
 	lttr  = log                --oneline            --graph                                  --remotes --tags    --simplify-by-decoration
 	ltbtr = log                --oneline            --graph                       --branches --remotes --tags    --simplify-by-decoration
 	l1    = log --oneline --decorate -1
-	blo   = log --oneline --decorate                    FETCH_HEAD..HEAD  #--relative=XX/YY/
-#	blg   = log --oneline --decorate --graph            FETCH_HEAD..HEAD  #--relative=XX/YY/
-#	bls   = log --oneline --decorate         --stat     FETCH_HEAD..HEAD  #--relative=XX/YY/
-#	blsw  = log --oneline --decorate         --stat=227 FETCH_HEAD..HEAD  #--relative=XX/YY/
-#	blsg  = log --oneline --decorate --graph --stat     FETCH_HEAD..HEAD  #--relative=XX/YY/
-#	blsgw = log --oneline --decorate --graph --stat=227 FETCH_HEAD..HEAD  #--relative=XX/YY/
-	bl    = log --oneline --decorate                    @{u}..HEAD  #--relative=XX/YY/
-	blg   = log --oneline --decorate --graph            @{u}..HEAD  #--relative=XX/YY/
-	bls   = log --oneline --decorate         --stat     @{u}..HEAD  #--relative=XX/YY/
-	blsw  = log --oneline --decorate         --stat=227 @{u}..HEAD  #--relative=XX/YY/
-	blsg  = log --oneline --decorate --graph --stat     @{u}..HEAD  #--relative=XX/YY/
-	blsgw = log --oneline --decorate --graph --stat=227 @{u}..HEAD  #--relative=XX/YY/
-	pl    = log --oneline --decorate                    @{u}...HEAD   #--max-count=30   #--relative=XX/YY/
-	plg   = log --oneline --decorate --graph            @{u}...HEAD   #--max-count=30   #--relative=XX/YY/
-	pls   = log --oneline --decorate         --stat     @{u}...HEAD   #--max-count=30   #--relative=XX/YY/
-	plsw  = log --oneline --decorate         --stat=227 @{u}...HEAD   #--max-count=30   #--relative=XX/YY/
-	plsg  = log --oneline --decorate --graph --stat     @{u}...HEAD   #--max-count=30   #--relative=XX/YY/
-	plsgw = log --oneline --decorate --graph --stat=227 @{u}...HEAD   #--max-count=30   #--relative=XX/YY/
+	blo   = log --oneline --decorate                    FETCH_HEAD..HEAD
+#	blog   = log --oneline --decorate --graph            FETCH_HEAD..HEAD
+#	blos   = log --oneline --decorate         --stat     FETCH_HEAD..HEAD
+#	blosw  = log --oneline --decorate         --stat=227 FETCH_HEAD..HEAD
+#	blosg  = log --oneline --decorate --graph --stat     FETCH_HEAD..HEAD
+#	blosgw = log --oneline --decorate --graph --stat=227 FETCH_HEAD..HEAD
+	bl    = log --oneline --decorate                    @{u}..HEAD
+	blg   = log --oneline --decorate --graph            @{u}..HEAD
+	bls   = log --oneline --decorate         --stat     @{u}..HEAD
+	blsw  = log --oneline --decorate         --stat=227 @{u}..HEAD
+	blsg  = log --oneline --decorate --graph --stat     @{u}..HEAD
+	blsgw = log --oneline --decorate --graph --stat=227 @{u}..HEAD
+	pl    = log --oneline --decorate                    @{u}...HEAD   #--max-count=30
+	plg   = log --oneline --decorate --graph            @{u}...HEAD   #--max-count=30
+	pls   = log --oneline --decorate         --stat     @{u}...HEAD   #--max-count=30
+	plsw  = log --oneline --decorate         --stat=227 @{u}...HEAD   #--max-count=30
+	plsg  = log --oneline --decorate --graph --stat     @{u}...HEAD   #--max-count=30
+	plsgw = log --oneline --decorate --graph --stat=227 @{u}...HEAD   #--max-count=30
+	# show graph of current branch and its upstream down to their merge base, but not more
+	ul    = ! git log --oneline --decorate --graph            HEAD @{u} ^$(git merge-base HEAD @{u})^
+	uls   = ! git log --oneline --decorate --graph --stat     HEAD @{u} ^$(git merge-base HEAD @{u})^
+	ulsw  = ! git log --oneline --decorate --graph --stat=227 HEAD @{u} ^$(git merge-base HEAD @{u})^
+	# show graph of current branch and last fetch head down to their merge base, but not more
+	fl    = ! git log --oneline --decorate --graph            HEAD FETCH_HEAD ^$(git merge-base HEAD FETCH_HEAD)^
+	fls   = ! git log --oneline --decorate --graph --stat     HEAD FETCH_HEAD ^$(git merge-base HEAD FETCH_HEAD)^
+	flsw  = ! git log --oneline --decorate --graph --stat=227 HEAD FETCH_HEAD ^$(git merge-base HEAD FETCH_HEAD)^
+
+	us = up-stat
+	usd = up-stat-dir
+	up-stat = ! echo "Details:" && git plsgw  &&  echo "Combined:" && git dstw HEAD...@{u} --stat=200
+	up-stat-dir = ! echo "Details Dirstat:" && git plg --dirstat=0  &&  echo "Combined Dirstat:" && git d HEAD...@{u} --dirstat=0
+	fetch-stat = ! git fetch && git up-stat
 
 	sl  = stash list
 	stl = stash list
@@ -112,24 +139,42 @@
 
 	p = stage --patch
 	ps = stage -p *.c *.cpp *.h *.hpp *.ino
-	ul = add -u .
+
+	aul = add -u .
 	amend = commit --amend
+	mff = !mff() { git merge --ff-only "$1" && git reset --hard HEAD@{1} && git merge --no-ff "$1"; }; mff
+
 	ri   = rebase --interactive
 	riaa = rebase --interactive --autostash --autosquash
+	riaa7 = riaa HEAD^^^^^^^
 	ra   = rebase               --autostash
 	raa  = rebase               --autostash --autosquash
+	rc   = rebase --continue
+	rscp = rebase --show-current-patch
+
+	rebase-exec-build             = rebase -i --autosquash --exec 'fmake build || ( fmake clean && fmake build )'
+	rebase-exec-build-test        = rebase -i --autosquash --exec '( fmake build || ( fmake clean && fmake build ) ) && fmake test'
+	rebase-exec-build-time        = rebase -i --autosquash --exec 'time fmake build || ( ls && time fmake clean && time fmake build )'
+
+	# 'ls' to put something catchy in the terminal to show that a clean was necessary
+	rebase-exec-build-time        = rebase -i --exec 'time fmake build || ( ls && time fmake clean && time fmake build )'
+	# create a log for commits requiring a clean build
+	rebase-exec-build-log-cleaned = rebase -i --exec "time fmake build || ( git show --stat >> REBASE_COMMITS_REQUIRING_CLEAN_BUILD && time fmake clean && time fmake build )"
+
+	riaa-exec-build           = riaa --exec 'fmake build || ( fmake clean && fmake build )'
+	riaa-exec-build-log-clean = riaa --exec 'fmake build || ( ( echo ----- && date && git show --stat ) >> REBASE_COMMITS_REQUIRING_CLEAN_BUILD && fmake clean && fmake build )' --reschedule-failed-exec
+#	riaa-exec-build-log-clean = riaa --exec 'fmake-build-clean-log'
+	riaa-exec-build-test      = riaa --exec '( fmake build || ( fmake clean && fmake build ) ) && fmake test'
+	riaa-exec-build-time      = riaa --exec 'time fmake build || ( ls && time fmake clean && time fmake build )'
+	riaa-exec-test            = riaa --exec '( fmake test && ( ( echo ----- && date && git show --stat ) >> REBASE_COMMITS_TEST_PASSES ) ) || ( ( echo ----- && date && git show --stat ) >> REBASE_COMMITS_TEST_FAILS )'
+
+
 	pura = pull --rebase --autostash  --verbose --stat
 	puri = pull --rebase=interactive
 	pupu = ! git pull --verbose --stat && git push --verbose --progress
 	purapu = ! git pura && git push --verbose --progress
 	mff = merge --ff-only
 	mt = mergetool
-
-	us = up-stat
-	usd = up-stat-dir
-	up-stat = ! echo "Details:" && git plsgw  &&  echo "Combined:" && git dstw HEAD...@{u} --stat=200
-	up-stat-dir = ! echo "Details Dirstat:" && git plg --dirstat=0  &&  echo "Combined Dirstat:" && git d HEAD...@{u} --dirstat=0
-	fetch-stat = ! git fetch && git up-stat
 
 	b   = branch
 	bv  = branch -l -v

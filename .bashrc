@@ -44,6 +44,8 @@ alias findkeepsdelete="find . -name '*.keep' -print -delete"
 
 alias find-commented-lines="find . -name '*.c' | xargs grep --color -Hn \"^ *//\""
 
+alias find_XXXX_ls_l='find . -name "STM*.lnt" -exec ls -l "{}" \; | sort'
+
 alias find_defines_sorted='find source/ | xargs grep --no-filename "#define" | sort'
 # alias find_defines_repeated='find source/ -type f | xargs grep --no-filename -E "^[\t ]*#define" | cut -d " " -f 2 | sort | uniq --repeated'
 # ^ now a separate script
@@ -161,14 +163,7 @@ alias mcd="make clean BUILDCFG=dbg"
 alias mdd="rm -vrf _dbg_*"
 alias mrd="mdd && mad"
 
-function make_sub_directories_mad()
-{
-  dirs=(*/)
-  for dir in "${dirs[@]}"; do
-    pushd $dir  &&  mad
-    popd  ||  return
-  done
-}
+
 
 alias madl="mad 2>&1 | tee output_make_all_dbg.log"
 
@@ -197,7 +192,7 @@ export GIT_PS1_SHOWUPSTREAM=1
 
 alias g="git"
 alias qgit="git"
-alias git-no-sll="git -c http.sslVerify=false"
+alias git-no-ssl="git -c http.sslVerify=false"
 alias git-editor-npp="git -c core.editor='notepad++ -multiInst -noPlugin -nosession'"
 alias git-editor-code='git -c core.editor="code --new-window --wait"'
 
@@ -299,7 +294,7 @@ git_history_compare()
 
   # gitdiff $branch1 $2 > /dev/null
   #echo "diff --color $4 $5 <(git $command $branch1) <(git $command $2)"
-  diff -I "commit ......." -I "index ......." --color --brief $4 $5 <(git $command $branch1) <(git $command $branch2) #> /dev/null
+  diff -I "commit ......." -I "index ......." -I "@@ -[0-9,]* +[0-9,]* @@ *.*" --color --brief $4 $5 <(git $command $branch1) <(git $command $branch2) #> /dev/null
   diffstatus=$?
 
   if [[ $diffstatus -eq 1 ]]
@@ -329,7 +324,7 @@ git_history_compare_until_equal()
   echo Comparing $branch1 and $branch2:
   git $command --summary --pretty=oneline $branch1 $branch2
 
-  diff -I "commit ......." -I "index ......." --color --brief $4 $5 <(git $command $branch1) <(git $command $branch2)  > /dev/null
+  diff -I "commit ......." -I "index ......." -I "@@ -[0-9,]* +[0-9,]* @@ *.*" --color --brief $4 $5 <(git $command $branch1) <(git $command $branch2)  > /dev/null
   diffstatus=$?
 
   if [[ $diffstatus -eq 1 ]]
@@ -358,14 +353,14 @@ git_history_compare_until_different()
   echo Comparing $branch1 and $branch2:
   git $command --summary --pretty=oneline $branch1 $branch2
 
-  diff -I 'commit .......' -I 'index .......' --color $4 $5 <(git $command $branch1) <(git $command $branch2)  > /dev/null
+  diff -I 'commit .......' -I 'index .......' -I '@@ -[0-9,]* +[0-9,]* @@ *.*' --color $4 $5 <(git $command $branch1) <(git $command $branch2)  > /dev/null
   diffstatus=$?
 
   if [[ $diffstatus -eq 1 ]]
   then
-#    diff -I 'commit .......' -I 'index .......' --color $4 $5 <(git $command $branch1) <(git $command $branch2)
+#    diff -I 'commit .......' -I 'index .......' -I '@@ -[0-9,]* +[0-9,]* @@ *.*' --color $4 $5 <(git $command $branch1) <(git $command $branch2)
 #    echo Different! Diff shown above. Stopping.
-    echo "diff -I 'commit .......' -I 'index .......' --color $4 $5 <(git $command $branch1) <(git $command $branch2)"
+    echo "diff -I 'commit .......' -I 'index .......' -I '@@ -[0-9,]* +[0-9,]* @@ *.*' --color $4 $5 <(git $command $branch1) <(git $command $branch2)"
     echo Different! Call diff with above command. Stopping.
   elif [[ $diffstatus -eq 0 ]]
   then
@@ -400,7 +395,7 @@ gitdiff_multi()
 
   # gitdiff $1 $2 > /dev/null
   #echo "diff --color $3 $4 $5 <(git show $1) <(git show $2)"
-  diff -I "commit ......." -I "index ......." --color --brief $3 $4 $5 <(git show $1) <(git show $branch2) #> /dev/null
+  diff -I "commit ......." -I "index ......." -I "@@ -[0-9,]* +[0-9,]* @@ *.*" --color --brief $3 $4 $5 <(git show $1) <(git show $branch2) #> /dev/null
   diffstatus=$?
 
   if [[ $diffstatus -eq 1 ]]
@@ -431,7 +426,7 @@ gitdiff_multi_until_equal()
   echo Comparing $1 and $branch2:
   git show --summary --pretty=oneline $1 $branch2
 
-  diff -I "commit ......." -I "index ......." --color --brief $3 $4 $5 <(git show $1) <(git show $branch2)  > /dev/null
+  diff -I "commit ......." -I "index ......." -I "@@ -[0-9,]* +[0-9,]* @@ *.*" --color --brief $3 $4 $5 <(git show $1) <(git show $branch2)  > /dev/null
   diffstatus=$?
 
   if [[ $diffstatus -eq 1 ]]
@@ -458,14 +453,14 @@ gitdiff_multi_until_different()
   echo Comparing $1 and $branch2:
   git show --summary --pretty=oneline $1 $branch2
 
-  diff -I 'commit .......' -I 'index .......' --color $3 $4 $5 <(git show $1) <(git show $branch2)  > /dev/null
+  diff -I 'commit .......' -I 'index .......' -I '@@ -[0-9,]* +[0-9,]* @@ *.*' --color $3 $4 $5 <(git show $1) <(git show $branch2)  > /dev/null
   diffstatus=$?
 
   if [[ $diffstatus -eq 1 ]]
   then
-#    diff -I 'commit .......' -I 'index .......' --color $3 $4 $5 <(git show $1) <(git show $branch2)
+#    diff -I 'commit .......' -I 'index .......' -I '@@ -[0-9,]* +[0-9,]* @@ *.*' --color $3 $4 $5 <(git show $1) <(git show $branch2)
 #    echo Different! Diff shown above. Stopping.
-    echo "diff -I 'commit .......' -I 'index .......' --color $3 $4 $5 <(git show $1) <(git show $branch2)"
+    echo "diff -I 'commit .......' -I 'index .......' -I '@@ -[0-9,]* +[0-9,]* @@ *.*' --color $3 $4 $5 <(git show $1) <(git show $branch2)"
     echo Different! Call diff with above command. Stopping.
   elif [[ $diffstatus -eq 0 ]]
   then

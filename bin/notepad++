@@ -1,0 +1,7 @@
+#NP="/cygdrive/c/Program Files (x86)/Notepad++/notepad++.exe"
+NP="/c/Program Files (x86)/Notepad++/notepad++.exe"
+#NP="C:\Program Files (x86)\Notepad++\notepad++.exe"
+#NP="/c/Program Files/Notepad++/notepad++.exe"
+echo NP: $NP
+#echo $@
+"$NP" $@

@@ -1,0 +1,59 @@
+#!/bin/bash
+# by FXKE
+
+# detect whether file was sourced or executed
+(return 0 2>/dev/null) && file_was_sourced=1 || file_was_sourced=0
+# echo file_was_sourced: $file_was_sourced
+
+
+# searches for the given command script in several known places and exutes it
+find_in_c_sources()
+{
+  local TERM=$1
+  local FOLDER=$2
+
+  # if [ $# -lt 1 ]; then
+  #   TERM=ExampleSearchTerm
+  # fi
+
+  # replace folder argument by . if not given
+  if [ $# -lt 2 ]; then
+    FOLDER=.
+  fi
+
+#   TERM=$(echo -e "$TERM")
+
+  echo "Searching for term: $TERM in folder: $FOLDER"
+
+  local matching_files
+  # matching_files=$(find "$FOLDER" \( -name .git -o -name .svn -o -name build -o -name doc \) -prune -o -type f \( -name "*.h" -o -name "*.c" \) | grep -i "$TERM")
+  find "$FOLDER" \( -name .git -o -name .svn -o -name build -o -name doc \) -prune -o -type f \( -name "*.h" -o -name "*.c" \) | grep -i "$TERM"
+  matching_files=$?
+
+  local files_with_matches
+  # files_with_matches=$(find "$FOLDER" \( -name .git -o -name .svn -o -name build -o -name doc \) -prune -o -type f \( -name "*.h" -o -name "*.c" \) | xargs grep --with-filename --line-number -E "$TERM")
+  find "$FOLDER" \( -name .git -o -name .svn -o -name build -o -name doc \) -prune -o -type f \( -name "*.h" -o -name "*.c" -o -name CMakeLists.txt \) -print0 | xargs -0 grep --with-filename --line-number --color -E -i "$TERM"
+  files_with_matches=$?
+
+  echo "matching_files: $matching_files - files_with_matches: $files_with_matches"
+
+  if [[ $matching_files -eq 0 ]] || [[ $files_with_matches -eq 0 ]]; then
+    echo "Term found!"
+    false  # which is the not-desired case!
+  else
+    echo "Term not found."
+    true
+  fi
+}
+
+# perform actions if file is not sourced but executed
+if [ $file_was_sourced -eq 0 ]; then
+  if [ $# -gt 0 ]; then
+    # call function to search and execute command script
+    find_in_c_sources "$@"
+  else
+    find_in_c_sources ExampleSearchTerm
+    # >&2 echo "find_in_c_sources: Search term missing"
+    # false
+  fi
+fi

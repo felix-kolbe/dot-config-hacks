@@ -1,0 +1,5 @@
+FFF_AUTO="ruby %HOME%/workspace/tools/fff-auto/fff.rb"
+
+echo FFF_AUTO: %FFF_AUTO%
+::echo $@
+%FFF_AUTO% $@

@@ -1,0 +1,119 @@
+#!/bin/bash
+# by FXKE
+# fmake v1.0.1
+# File is designed to be both sourceable and executable.
+# - put it in your <user>/bin/ folder and call e.g. "fmake build"
+# - source it in other scripts and call e.g. "fmake_build" or "fmake_search_and_execute build"
+
+# detect whether file was sourced or executed
+(return 0 2>/dev/null) && file_was_sourced=1 || file_was_sourced=0
+# echo file_was_sourced: $file_was_sourced
+
+
+# searches for the given command script in several known places and exutes it
+fmake_search_and_execute()
+{
+  local COMMAND=$1
+  local PATH0=.
+  local PATH1=./tools/ci
+  local PATH2=./dev_tool/ci
+  local PATH3=../tools/ci
+  local PATH4=../dev_tool/ci
+  local PATH5=./tools
+  local PATH6=./dev_tool
+  local PATH7=../tools
+  local PATH8=../dev_tool
+  local path_found=
+
+  local set_dont_pause_at_end=true
+
+  local SCRIPT_NAME=make_$COMMAND.bat
+  if   [ -f "$PATH0/$SCRIPT_NAME" ]; then path_found=$PATH0
+  elif [ -f "$PATH1/$SCRIPT_NAME" ]; then path_found=$PATH1
+  elif [ -f "$PATH2/$SCRIPT_NAME" ]; then path_found=$PATH2
+  elif [ -f "$PATH3/$SCRIPT_NAME" ]; then path_found=$PATH3
+  elif [ -f "$PATH4/$SCRIPT_NAME" ]; then path_found=$PATH4
+  elif [ -f "$PATH5/$SCRIPT_NAME" ]; then path_found=$PATH5
+  elif [ -f "$PATH6/$SCRIPT_NAME" ]; then path_found=$PATH6
+  elif [ -f "$PATH7/$SCRIPT_NAME" ]; then path_found=$PATH7
+  elif [ -f "$PATH8/$SCRIPT_NAME" ]; then path_found=$PATH8
+  else
+    set_dont_pause_at_end=false
+    SCRIPT_NAME=start_$COMMAND.bat
+    if   [ -f "$PATH0/$SCRIPT_NAME" ]; then path_found=$PATH0
+    elif [ -f "$PATH1/$SCRIPT_NAME" ]; then path_found=$PATH1
+    elif [ -f "$PATH2/$SCRIPT_NAME" ]; then path_found=$PATH2
+    elif [ -f "$PATH3/$SCRIPT_NAME" ]; then path_found=$PATH3
+    elif [ -f "$PATH4/$SCRIPT_NAME" ]; then path_found=$PATH4
+    elif [ -f "$PATH5/$SCRIPT_NAME" ]; then path_found=$PATH5
+    elif [ -f "$PATH6/$SCRIPT_NAME" ]; then path_found=$PATH6
+    elif [ -f "$PATH7/$SCRIPT_NAME" ]; then path_found=$PATH7
+    elif [ -f "$PATH8/$SCRIPT_NAME" ]; then path_found=$PATH8
+    else
+      # alternatively, assume the full script name was given as the command parameter. search for that, too
+      SCRIPT_NAME=$COMMAND
+      if   [ -f "$PATH0/$SCRIPT_NAME" ]; then path_found=$PATH0
+      elif [ -f "$PATH1/$SCRIPT_NAME" ]; then path_found=$PATH1
+      elif [ -f "$PATH2/$SCRIPT_NAME" ]; then path_found=$PATH2
+      elif [ -f "$PATH3/$SCRIPT_NAME" ]; then path_found=$PATH3
+      elif [ -f "$PATH4/$SCRIPT_NAME" ]; then path_found=$PATH4
+      elif [ -f "$PATH5/$SCRIPT_NAME" ]; then path_found=$PATH5
+      elif [ -f "$PATH6/$SCRIPT_NAME" ]; then path_found=$PATH6
+      elif [ -f "$PATH7/$SCRIPT_NAME" ]; then path_found=$PATH7
+      elif [ -f "$PATH8/$SCRIPT_NAME" ]; then path_found=$PATH8
+      fi
+    fi
+  fi
+
+  if [ -z "$path_found" ]; then
+    >&2 echo "No '$COMMAND' script found!"
+    false
+  else
+    echo "Script for '$COMMAND' found in: $path_found/$SCRIPT_NAME"
+    # execute in subshell to no be affected by cd or problems
+    # scripts require CWD to be their location
+    if [ "$set_dont_pause_at_end" = true ]; then
+      (cd $path_found && ./"$SCRIPT_NAME" DontPauseAtEnd)
+    else
+      (cd $path_found && ./"$SCRIPT_NAME")
+    fi
+  fi
+}
+
+# wrapper functions in case this file is sourced
+fmake_build()
+{
+  fmake_search_and_execute build
+}
+fmake_clean()
+{
+  fmake_search_and_execute clean
+}
+fmake_test()
+{
+  fmake_search_and_execute test
+}
+fmake_coverage()
+{
+  fmake_search_and_execute coverage
+}
+fmake_lint()
+{
+  fmake_search_and_execute lint
+}
+fmake_doxygen()
+{
+  fmake_search_and_execute doxygen
+}
+
+
+# perform actions if file is not sourced but executed
+if [ $file_was_sourced -eq 0 ]; then
+  if [ $# -gt 0 ]; then
+    # call function to search and execute command script
+    fmake_search_and_execute "$@"
+  else
+    >&2 echo "fmake: Command parameter missing! E.g. 'build', 'clean', 'test', 'coverage', 'lint', 'doxygen'"
+    false
+  fi
+fi

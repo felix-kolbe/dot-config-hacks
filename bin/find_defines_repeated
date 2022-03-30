@@ -1,0 +1,49 @@
+#!/bin/bash
+# by FXKE
+
+# intermediate one-liner
+# find source/ -type f | xargs grep --no-filename -E "^[\t ]*#define" | cut -d " " -f 2 | sort | uniq --repeated | IFS= read -n 1 ; echo $?
+
+# detect whether file was sourced or executed
+(return 0 2>/dev/null) && file_was_sourced=1 || file_was_sourced=0
+# echo file_was_sourced: $file_was_sourced
+
+
+find_defines_repeated()
+{
+  local FOLDER=$1
+
+  # replace folder argument by . if not given
+  if [ $# -lt 1 ]; then
+    FOLDER=.
+  fi
+
+  local all_defines
+  all_defines=$(find "$FOLDER" \( -name .git -o -name .svn -o -name build -o -name doc -o -name unity -o -name dependency -o -name cal_conf.h  -o -name single_parameter -o -name examples \) -prune -o -type f \( -name "*.h" -o -name "*.c" \) -print0 | xargs -0 grep --no-filename -E "^[\t ]*#define")
+  # echo "$all_defines"
+
+  local repeated_defines
+  repeated_defines=$(echo "$all_defines" | cut -d " " -f 2 | sort | uniq --repeated)
+  # echo "$repeated_defines" | wc -l
+
+  # if [[ $(echo "$repeated_defines" | wc -c) -gt 1 ]]; then
+  if [[ ${#repeated_defines} -ne 0 ]]; then
+    echo "$repeated_defines"
+    echo "Repeated defines found!"
+    false
+  else
+    echo "No repeated defines found."
+    true
+  fi
+}
+
+# perform actions if file is not sourced but executed
+if [ $file_was_sourced -eq 0 ]; then
+  # if [ $# -gt 0 ]; then
+    # call function to search and execute command script
+    find_defines_repeated "$@"
+  # else
+  #   >&2 echo "find_defines_repeated: path missing! E.g. ...."
+  #   false
+  # fi
+fi

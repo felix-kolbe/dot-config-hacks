@@ -57,15 +57,16 @@
 	sss  = !" echo staged: && git dss  ; echo not staged: && git dst "
 	sssw = !" echo staged: && git dssw ; echo not staged: && git dstw"
 
-	l    = log --max-count=30  --oneline --decorate --graph
+	l    = log --max-count=31  --oneline --decorate --graph
 	ll   = log                 --oneline --decorate --graph
-	ls   = log --max-count=30  --oneline --decorate --graph --stat
-	lsw  = log --max-count=30  --oneline --decorate --graph --stat=227
-	lG   = log --max-count=30  --oneline --decorate
-	lGs  = log --max-count=30  --oneline --decorate         --stat
-	lp   = log --max-count=30   --pretty --decorate --graph
-	lpG  = log --max-count=30   --pretty --decorate
-	lr   = log --max-count=30  --oneline --decorate --graph              --source            --remotes         HEAD
+	ls   = log --max-count=31  --oneline --decorate --graph --stat
+	lsw  = log --max-count=31  --oneline --decorate --graph --stat=227
+	lG   = log --max-count=31  --oneline --decorate
+	lGs  = log --max-count=31  --oneline --decorate         --stat
+	lp   = log --max-count=31   --pretty --decorate --graph
+	lpG  = log --max-count=31   --pretty --decorate
+	lr   = log --max-count=31  --oneline --decorate --graph              --source            --remotes         HEAD
+	ld   = log --max-count=31  --oneline --decorate --graph              --source                              HEAD develop origin/develop
 	lb   = log --max-count=31  --oneline --decorate --graph              --source --branches                   HEAD
 	lbr  = log --max-count=31  --oneline --decorate --graph              --source --branches --remotes         HEAD
 	lbt  = log --max-count=31  --oneline --decorate --graph              --source --branches           --tags  HEAD
@@ -77,6 +78,7 @@
 	lbG  = log --max-count=31  --oneline --decorate                      --source --branches --remotes --tags  HEAD
 	lpb  = log --max-count=31   --pretty --decorate --graph              --source --branches --remotes --tags  HEAD
 	lpbG = log --max-count=31   --pretty --decorate                      --source --branches --remotes --tags  HEAD
+	ldl   = log                --oneline --decorate --graph              --source                              HEAD develop origin/develop
 	lbl   = log                --oneline --decorate --graph              --source --branches                   HEAD
 	lbrl  = log                --oneline --decorate --graph              --source --branches --remotes         HEAD
 	lbtl  = log                --oneline --decorate --graph              --source --branches           --tags  HEAD
@@ -128,6 +130,7 @@
 	up-stat = ! echo "Details:" && git plsgw  &&  echo "Combined:" && git dstw HEAD...@{u} --stat=200
 	up-stat-dir = ! echo "Details Dirstat:" && git plg --dirstat=0  &&  echo "Combined Dirstat:" && git d HEAD...@{u} --dirstat=0
 	fetch-stat = ! git fetch && git up-stat
+	fetch-ul = ! git fetch && git ul
 
 	sl  = stash list
 	stl = stash list

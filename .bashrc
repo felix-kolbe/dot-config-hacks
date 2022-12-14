@@ -57,8 +57,8 @@ alias find_defines_sorted='find source/ | xargs grep --no-filename "#define" | s
 #alias find_empty_directories_recursively_2_remove="find . -empty -type d -print -delete"
 #alias find_empty_directories_recursively_3_remove="find . -depth -exec rmdir -v {} \;"
 
-#alias find_empty_directories_recursively="find . -wholename "'.git*"'-prune -o -type d -empty -print"
-#alias find_empty_directories_recursively_remove="find . -wholename "'.git*"'-prune -o -type d -empty -exec rmdir -v {} \;"
+#alias find_empty_directories_recursively="find . -wholename "'.git*"' -prune -o -type d -empty -print"
+#alias find_empty_directories_recursively_remove="find . -wholename "'.git*"' -prune -o -type d -empty -exec rmdir -v {} \;"
 
 alias find_empty_directories_recursively="find ./* -depth -not -path '*.git*' -type d -empty -print"
 alias find_empty_directories_recursively_remove="find ./* -depth -not -path '*.git*' -type d -empty -exec rmdir -v {} \;"

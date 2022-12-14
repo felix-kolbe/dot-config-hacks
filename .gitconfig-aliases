@@ -21,19 +21,19 @@
 	d     = diff
 	dd    = diff          --dirstat=0
 	dst   = diff          --stat
-	dstw  = diff          --stat=227
+	dstw  = diff          --stat=187
 	ds    = diff --staged
 	dsd   = diff --staged --dirstat=0
 	dss   = diff --staged --stat
-	dssw  = diff --staged --stat=227
+	dssw  = diff --staged --stat=187
 	dur    = diff                       HEAD @{u}
 	durd   = diff          --dirstat=0  HEAD @{u}
 	durst  = diff          --stat       HEAD @{u}
-	durstw = diff          --stat=227   HEAD @{u}
+	durstw = diff          --stat=187   HEAD @{u}
 	du     = diff                       @{u} HEAD
 	dud    = diff          --dirstat=0  @{u} HEAD
 	dust   = diff          --stat       @{u} HEAD
-	dustw  = diff          --stat=227   @{u} HEAD
+	dustw  = diff          --stat=187   @{u} HEAD
 
 	dwu  = diff                     --word-diff --unified=0
 	dswu = diff --staged            --word-diff --unified=0
@@ -48,7 +48,7 @@
 	shcwc = show                     --color-words=.
 	shcww = show                     --color-words='[A-z_0-9][A-z_0-9]*'
 	shst  = show --stat
-	shstw = show --stat=227
+	shstw = show --stat=187
 	show-ws = show --ignore-space-at-eol
 
 	df   = diff  *.c *.cpp *.h *.hpp *.ino
@@ -60,7 +60,7 @@
 	l    = log --max-count=31  --oneline --decorate --graph
 	ll   = log                 --oneline --decorate --graph
 	ls   = log --max-count=31  --oneline --decorate --graph --stat
-	lsw  = log --max-count=31  --oneline --decorate --graph --stat=227
+	lsw  = log --max-count=31  --oneline --decorate --graph --stat=187
 	lG   = log --max-count=31  --oneline --decorate
 	lGs  = log --max-count=31  --oneline --decorate         --stat
 	lp   = log --max-count=31   --pretty --decorate --graph
@@ -74,7 +74,7 @@
 	lbn  = log --max-count=31  --oneline --decorate --graph                       --branches --remotes --tags  HEAD
 	lbs  = log --max-count=31  --oneline --decorate --graph --stat       --source --branches --remotes --tags  HEAD
 	lbsn = log --max-count=31  --oneline --decorate --graph --stat                --branches --remotes --tags  HEAD
-	lbsw = log --max-count=31  --oneline --decorate --graph --stat=227   --source --branches --remotes --tags  HEAD
+	lbsw = log --max-count=31  --oneline --decorate --graph --stat=187   --source --branches --remotes --tags  HEAD
 	lbG  = log --max-count=31  --oneline --decorate                      --source --branches --remotes --tags  HEAD
 	lpb  = log --max-count=31   --pretty --decorate --graph              --source --branches --remotes --tags  HEAD
 	lpbG = log --max-count=31   --pretty --decorate                      --source --branches --remotes --tags  HEAD
@@ -85,7 +85,7 @@
 	lbnl  = log                --oneline --decorate --graph                       --branches --remotes --tags  HEAD
 	lbsl  = log                --oneline --decorate --graph --stat       --source --branches --remotes --tags  HEAD
 	lbsnl = log                --oneline --decorate --graph --stat                --branches --remotes --tags  HEAD
-	lbswl = log                --oneline --decorate --graph --stat=227   --source --branches --remotes --tags  HEAD
+	lbswl = log                --oneline --decorate --graph --stat=187   --source --branches --remotes --tags  HEAD
 	lbGl  = log                --oneline --decorate                      --source --branches --remotes --tags  HEAD
 	lpbl  = log                 --pretty --decorate --graph              --source --branches --remotes --tags  HEAD
 	lpbGl = log                 --pretty --decorate                      --source --branches --remotes --tags  HEAD
@@ -101,29 +101,29 @@
 	blo   = log --oneline --decorate                    FETCH_HEAD..HEAD
 #	blog   = log --oneline --decorate --graph            FETCH_HEAD..HEAD
 #	blos   = log --oneline --decorate         --stat     FETCH_HEAD..HEAD
-#	blosw  = log --oneline --decorate         --stat=227 FETCH_HEAD..HEAD
+#	blosw  = log --oneline --decorate         --stat=187 FETCH_HEAD..HEAD
 #	blosg  = log --oneline --decorate --graph --stat     FETCH_HEAD..HEAD
-#	blosgw = log --oneline --decorate --graph --stat=227 FETCH_HEAD..HEAD
+#	blosgw = log --oneline --decorate --graph --stat=187 FETCH_HEAD..HEAD
 	bl    = log --oneline --decorate                    @{u}..HEAD
 	blg   = log --oneline --decorate --graph            @{u}..HEAD
 	bls   = log --oneline --decorate         --stat     @{u}..HEAD
-	blsw  = log --oneline --decorate         --stat=227 @{u}..HEAD
+	blsw  = log --oneline --decorate         --stat=187 @{u}..HEAD
 	blsg  = log --oneline --decorate --graph --stat     @{u}..HEAD
-	blsgw = log --oneline --decorate --graph --stat=227 @{u}..HEAD
+	blsgw = log --oneline --decorate --graph --stat=187 @{u}..HEAD
 	pl    = log --oneline --decorate                    @{u}...HEAD   #--max-count=30
 	plg   = log --oneline --decorate --graph            @{u}...HEAD   #--max-count=30
 	pls   = log --oneline --decorate         --stat     @{u}...HEAD   #--max-count=30
-	plsw  = log --oneline --decorate         --stat=227 @{u}...HEAD   #--max-count=30
+	plsw  = log --oneline --decorate         --stat=187 @{u}...HEAD   #--max-count=30
 	plsg  = log --oneline --decorate --graph --stat     @{u}...HEAD   #--max-count=30
-	plsgw = log --oneline --decorate --graph --stat=227 @{u}...HEAD   #--max-count=30
+	plsgw = log --oneline --decorate --graph --stat=187 @{u}...HEAD   #--max-count=30
 	# show graph of current branch and its upstream down to their merge base, but not more
 	ul    = ! git log --oneline --decorate --graph            HEAD @{u} ^$(git merge-base HEAD @{u})^
 	uls   = ! git log --oneline --decorate --graph --stat     HEAD @{u} ^$(git merge-base HEAD @{u})^
-	ulsw  = ! git log --oneline --decorate --graph --stat=227 HEAD @{u} ^$(git merge-base HEAD @{u})^
+	ulsw  = ! git log --oneline --decorate --graph --stat=187 HEAD @{u} ^$(git merge-base HEAD @{u})^
 	# show graph of current branch and last fetch head down to their merge base, but not more
 	fl    = ! git log --oneline --decorate --graph            HEAD FETCH_HEAD ^$(git merge-base HEAD FETCH_HEAD)^
 	fls   = ! git log --oneline --decorate --graph --stat     HEAD FETCH_HEAD ^$(git merge-base HEAD FETCH_HEAD)^
-	flsw  = ! git log --oneline --decorate --graph --stat=227 HEAD FETCH_HEAD ^$(git merge-base HEAD FETCH_HEAD)^
+	flsw  = ! git log --oneline --decorate --graph --stat=187 HEAD FETCH_HEAD ^$(git merge-base HEAD FETCH_HEAD)^
 
 	us = up-stat
 	usd = up-stat-dir
@@ -131,6 +131,8 @@
 	up-stat-dir = ! echo "Details Dirstat:" && git plg --dirstat=0  &&  echo "Combined Dirstat:" && git d HEAD...@{u} --dirstat=0
 	fetch-stat = ! git fetch && git up-stat
 	fetch-ul = ! git fetch && git ul
+	ful = ! git fetch && git ul
+	ffl = ! git fetch && git fl
 
 	sl  = stash list
 	stl = stash list
@@ -182,8 +184,9 @@
 	b   = branch
 	bv  = branch -l -v
 	bvv = branch -l -vv
-	bvvb = ! git bvv --color | grep --color -e ': gone' -e 'behind' -e ''
-	bvva = ! git bvv --color | grep --color -e ': gone' -e 'ahead' -e ''
+	bvvb = ! git bvv --color | grep --color -e 'behind' -e ''
+	bvva = ! git bvv --color | grep --color -e ', behind' -e 'ahead' -e ''
+	bvvg = ! git bvv --color | grep --color -e ': gone' -e 'ahead' -e ''
 
 	bvs  = branch --format='%(refname:short)'
 	bvsa = branch --all --format='%(refname:short)'

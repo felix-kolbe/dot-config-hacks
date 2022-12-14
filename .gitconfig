@@ -26,15 +26,14 @@
 
 [pull]
 #	rebase = false
-#	rebase = true
+	rebase = true
 
 [fetch]
-#	prune = false
+#	prune = true
 
 [rebase]
 	missingCommitsCheck = warn
 	abbreviateCommands = true
-
 
 [diff]
 	wsErrorHighlight = all
@@ -50,6 +49,7 @@
 #	tool = meld
 #	tool = tortoisemerge
 #	tool = WinMerge
+#	tool = code
 
 [difftool "diffuse"]
 	path = C:/Program Files (x86)/Diffuse/diffuse.exe
@@ -95,7 +95,8 @@
 	cmd = \"C:/Program Files (x86)/Meld/Meld.exe\" \"$LOCAL\" \"$BASE\" \"$REMOTE\" --output \"$MERGED\"
 #	cmd = 'tools/Meld_3.18/Meld.exe' $LOCAL $BASE $REMOTE --output=$MERGED
 
-
+[mergetool "code"]
+	cmd = code --wait --merge $REMOTE $LOCAL $BASE $MERGED
 
 [gui]
 	gcwarning = false

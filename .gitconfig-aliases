@@ -66,6 +66,7 @@
 	lp   = log --max-count=31   --pretty --decorate --graph
 	lpG  = log --max-count=31   --pretty --decorate
 	lr   = log --max-count=31  --oneline --decorate --graph              --source            --remotes         HEAD
+	ldev = log --max-count=31  --oneline --decorate --graph              --source                              HEAD dev origin/dev
 	ld   = log --max-count=31  --oneline --decorate --graph              --source                              HEAD develop origin/develop
 	lb   = log --max-count=31  --oneline --decorate --graph              --source --branches                   HEAD
 	lbr  = log --max-count=31  --oneline --decorate --graph              --source --branches --remotes         HEAD
@@ -78,6 +79,7 @@
 	lbG  = log --max-count=31  --oneline --decorate                      --source --branches --remotes --tags  HEAD
 	lpb  = log --max-count=31   --pretty --decorate --graph              --source --branches --remotes --tags  HEAD
 	lpbG = log --max-count=31   --pretty --decorate                      --source --branches --remotes --tags  HEAD
+	ldevl = log                --oneline --decorate --graph              --source                              HEAD dev origin/dev
 	ldl   = log                --oneline --decorate --graph              --source                              HEAD develop origin/develop
 	lbl   = log                --oneline --decorate --graph              --source --branches                   HEAD
 	lbrl  = log                --oneline --decorate --graph              --source --branches --remotes         HEAD
@@ -133,6 +135,8 @@
 	fetch-ul = ! git fetch && git ul
 	ful = ! git fetch && git ul
 	ffl = ! git fetch && git fl
+	flb = ! git fetch && git lb
+	flbr = ! git fetch && git lbr
 
 	sl  = stash list
 	stl = stash list
@@ -197,8 +201,15 @@
 	cod = checkout --detach
 
 	sw = switch
+	sw-st-pll-upd-dev = ! git stash && git sw dev && git pull --ff && git stp
+	sw-dev-pull = ! git sw dev && git pull --ff
+	sw-develop-pull = ! git sw develop && git pull --ff
 	cp = cherry-pick
 	wl = worktree list
+
+	su = submodule update
+	sur = submodule update --recursive
+	suri = submodule update --recursive --init
 
 	fetch = fetch -v
 

@@ -152,6 +152,10 @@ function highlight_col() {
 
 
 
+mkdircd() {
+  #Make path for each argument and cd into the last path
+  mkdir -p "$@" && cd "$_"
+}
 
 
 ###### specific make/build helpers
@@ -191,6 +195,7 @@ export GIT_PS1_SHOWUNTRACKEDFILES=1
 export GIT_PS1_SHOWUPSTREAM=1
 
 
+alias git-bash='/git-bash.exe & > /dev/null 2&>1'
 alias g="git"
 alias qgit="git"
 alias git-no-ssl="git -c http.sslVerify=false"

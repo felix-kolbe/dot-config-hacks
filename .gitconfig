@@ -11,7 +11,7 @@
 	autocrlf = true
 	whitespace = cr-at-eol
 
-	editor = \"C:/Program Files (x86)/GitExtensions/GitExtensions.exe\" fileeditor
+#	editor = \"C:/Program Files (x86)/GitExtensions/GitExtensions.exe\" fileeditor
 #	editor = nano
 #	editor = notepad++  -multiInst -noPlugin -nosession
 #	editor = \"C:/Program Files (x86)/Notepad++/notepad++.exe\"  -multiInst -noPlugin -nosession
@@ -70,6 +70,9 @@
 [mergetool]
 #	prompt = false
 
+[mergetool "bc4"]
+	path = "C:/Users/%%%USER%%%/AppData/Local/Beyond Compare 4/BComp.exe"
+
 [mergetool "WinMerge"]
 	# https://stackoverflow.com/questions/10713925/how-can-i-make-winmerge-my-git-mergetool/55008972#55008972
 	# WinMerge flag information:
@@ -93,8 +96,6 @@
 #	cmd = 'tools/Meld_3.18/Meld.exe' $LOCAL $BASE $REMOTE --output=$MERGED
 
 
-[mergetool "bc4"]
-	path = "C:/Users/%%%USER%%%/AppData/Local/Beyond Compare 4/BComp.exe"
 
 [gui]
 	gcwarning = false

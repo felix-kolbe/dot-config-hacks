@@ -26,6 +26,7 @@ alias meld='"C:\Program Files (x86)\Meld\Meld.exe"'
 alias colordiff="diff --color"
 alias l >/dev/null 2>&1 || alias l='ls -CF'
 alias ll >/dev/null 2>&1 || alias ll="ls -goh"
+alias la >/dev/null 2>&1 || alias la="ls -goh -a"
 alias pipe-remove-colors='sed -r "s/\x1B\[(([0-9]+)(;[0-9]+)*)?[m,K,H,f,J]//g"'
 
 

@@ -8,7 +8,7 @@
 #git rebase --root --exec="mkdir -p build && cd build && env -u GIT_WORK_TREE -u GIT_DIR cmake .."
 
 
-alias git-bash='/git-bash.exe & > /dev/null 2&>1'
+alias git-bash='/git-bash.exe > /dev/null & disown'
 alias g="git"
 alias qgit="git"
 alias git-no-ssl="git -c http.sslVerify=false"

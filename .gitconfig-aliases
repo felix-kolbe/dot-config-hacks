@@ -11,8 +11,10 @@
 	aliases = ! git config --get-regexp 'alias.*' | sed 's/[ ]/ = /'
 
 	new = !sh -c 'git log $1@{1}..$1@{0} "$@"'
-	s  = status
-	ss = status -s
+	s   = status
+	si  = status --ignored
+	ss  = status -s
+	ssi = status -s --ignored
 	ssu = status -s -uno
 
 	diff-file-counts = ! echo "Overall changes:" && git diff --name-status | wc -l  &&  echo "Modified:" && git diff --name-status --diff-filter=M | wc -l  &&  echo "Deleted:" && git diff --name-status --diff-filter=D | wc -l  &&  echo "Added:" && git diff --name-status --diff-filter=A | wc -l  &&  echo "Remaining:" && git diff --name-status --diff-filter=mda | wc -l
@@ -119,6 +121,8 @@
 	plsg  = log --oneline --decorate --graph --stat     @{u}...HEAD   #--max-count=30
 	plsgw = log --oneline --decorate --graph --stat=187 @{u}...HEAD   #--max-count=30
 	# show graph of current branch and its upstream down to their merge base, but not more
+	ml    = ! git log --oneline --decorate --graph            HEAD main ^$(git merge-base HEAD main)^
+	mrl   = ! git log --oneline --decorate --graph            HEAD main ^$(git merge-base HEAD main)^ origin/main
 	ul    = ! git log --oneline --decorate --graph            HEAD @{u} ^$(git merge-base HEAD @{u})^
 	uls   = ! git log --oneline --decorate --graph --stat     HEAD @{u} ^$(git merge-base HEAD @{u})^
 	ulsw  = ! git log --oneline --decorate --graph --stat=187 HEAD @{u} ^$(git merge-base HEAD @{u})^

@@ -1,3 +1,6 @@
 [submodule "bash-git-prompt"]
 	path = bash-git-prompt
 	url = https://github.com/magicmonty/bash-git-prompt.git
+[submodule "better-git-branch"]
+	path = better-git-branch
+	url = https://gist.github.com/e9e743dee2e92db9a464619b99e94eff.git

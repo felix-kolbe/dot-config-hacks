@@ -74,7 +74,8 @@
 	lbr  = log --max-count=31  --oneline --decorate --graph              --source --branches --remotes         HEAD
 	lbt  = log --max-count=31  --oneline --decorate --graph              --source --branches           --tags  HEAD
 	lbd  = log --max-count=31  --oneline --decorate --graph --date-order --source --branches --remotes --tags  HEAD
-	lbn  = log --max-count=31  --oneline --decorate --graph                       --branches --remotes --tags  HEAD
+	lbn  = log --max-count=31  --oneline --decorate --graph                       --branches           --tags  HEAD
+	lbrn = log --max-count=31  --oneline --decorate --graph                       --branches --remotes --tags  HEAD
 	lbs  = log --max-count=31  --oneline --decorate --graph --stat       --source --branches --remotes --tags  HEAD
 	lbsn = log --max-count=31  --oneline --decorate --graph --stat                --branches --remotes --tags  HEAD
 	lbsw = log --max-count=31  --oneline --decorate --graph --stat=187   --source --branches --remotes --tags  HEAD
@@ -141,6 +142,7 @@
 	ffl = ! git fetch && git fl
 	flb = ! git fetch && git lb
 	flbr = ! git fetch && git lbr
+	fmrl = ! git fetch && git mrl
 
 	sl  = stash list
 	stl = stash list
@@ -191,6 +193,8 @@
 
 	b   = branch
 	bv  = branch -l -v
+	bvg = ! git bv --color | grep --color -e 'gone' -e 'ahead' -e ''
+	bvgf = ! git bv --color | grep --color gone | grep --color -e 'gone' -e 'ahead' -e ''
 	bvv = branch -l -vv
 	bvvb = ! git bvv --color | grep --color -e 'behind' -e ''
 	bvva = ! git bvv --color | grep --color -e ', behind' -e 'ahead' -e ''
@@ -199,6 +203,8 @@
 	bvs  = branch --format='%(refname:short)'
 	bvsa = branch --all --format='%(refname:short)'
 	bvsr = branch --remotes --format='%(refname:short)'
+
+	bb = !~/dot-config-hacks/better-git-branch/better-git-branch.sh
 
 	git = !git
 	co = checkout

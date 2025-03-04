@@ -205,6 +205,7 @@
 	bvsr = branch --remotes --format='%(refname:short)'
 
 	bb = !~/dot-config-hacks/better-git-branch/better-git-branch.sh
+	rf = !~/dot-config-hacks/git-related-files/git-related-files.sh
 
 	git = !git
 	co = checkout

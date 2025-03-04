@@ -4,3 +4,6 @@
 [submodule "better-git-branch"]
 	path = better-git-branch
 	url = https://gist.github.com/e9e743dee2e92db9a464619b99e94eff.git
+[submodule "git-related-files"]
+	path = git-related-files
+	url = https://gist.github.com/a5da5f2e2e076eb2434f8775ac5ff55e.git

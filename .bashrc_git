@@ -81,9 +81,33 @@ gitdiff-with-stage()
   diff --color $4 $5 <(git show $2 $3 $1) <(git diff --staged $2 $3)
 }
 
+gitdifft-with-working()
+{
+  echo "difft --color always $3 $4 $5 <(git show $1) <(git diff)"
+#  difft --color always $4 $5 <(git show $2 $3 $1) <(git diff $2 $3)
+  # difft can't handle <( ) piping?
+  git show $2 $3 $1  >  tmp_gitdifftemp_1
+  git diff $2 $3  >  tmp_gitdifftemp_2
+  difft --color always --width 240 $3 $4 $5 tmp_gitdifftemp_1 tmp_gitdifftemp_2
+  rm tmp_gitdifftemp_1 tmp_gitdifftemp_2
+}
+
+gitdifft-with-stage()
+{
+  echo "difft --color always $3 $4 $5 <(git show $1) <(git diff --staged)"
+#  difft --color always $4 $5 <(git show $2 $3 $1) <(git diff --staged $2 $3)
+  # difft can't handle <( ) piping?
+  git show $2 $3 $1  >  tmp_gitdifftemp_1
+  git diff --staged $2 $3  >  tmp_gitdifftemp_2
+  difft --color always --width 240 $3 $4 $5 tmp_gitdifftemp_1 tmp_gitdifftemp_2
+  rm tmp_gitdifftemp_1 tmp_gitdifftemp_2
+}
+
 # alias gitdiff-stopped-hash-with-stage='gitdiff-with-stage .git/rebase-merge/stopped-sha'
 alias gitdiff-rebase-head-with-working='gitdiff-with-working REBASE_HEAD'
 alias gitdiff-rebase-head-with-stage='gitdiff-with-stage REBASE_HEAD'
+alias gitdifft-rebase-head-with-working='gitdifft-with-working REBASE_HEAD'
+alias gitdifft-rebase-head-with-stage='gitdifft-with-stage REBASE_HEAD'
 
 # in some environments above <( ) piping is not working
 gitdiff_nopiping()
@@ -348,6 +372,44 @@ git_update_branches()
 
   echo "List of branches still being behind their upstream:"
   git branch -lvv | grep --color behind
+}
+
+
+git_current_branch_or_commit()
+{
+  current=$(git rev-parse --abbrev-ref HEAD)
+#  echo "current branch/tag: '$current'"
+  if [ "$current" = "HEAD" ]; then
+    current=$(git rev-parse --verify HEAD)
+#    echo "getting commit instead: '$current'"
+  fi
+#  echo "current branch/tag/commit: '$current'"
+  echo $current
+}
+
+
+git_rebase_branches_onto_current_branch()
+{
+  target=$(git_current_branch_or_commit)
+  echo "current branch/commit: $target"
+  git l1
+  for branch in "$@"
+  do
+    echo "$branch"
+  done
+
+  for branch in "$@"
+  do
+    echo "--------------------------------------------------------------------"
+    git branch -lvv  $branch  | grep --color behind
+    git sw $branch || return
+    git ml
+    git rebase --interactive $target || return
+    git ml
+  done
+
+  git checkout $target
+  git l1
 }
 
 

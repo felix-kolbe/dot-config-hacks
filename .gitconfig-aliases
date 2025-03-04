@@ -54,46 +54,48 @@
 	show-ws = show --ignore-space-at-eol
 
 	df   = diff  *.c *.cpp *.h *.hpp *.ino
+	
+	rdu  = ! git range-diff $(git merge-base HEAD @{u}) @{u} HEAD
 
 	ssd  = !" echo staged: && git ds --dirstat=0  ; echo not staged: && git d --dirstat=0"
 	sss  = !" echo staged: && git dss  ; echo not staged: && git dst "
 	sssw = !" echo staged: && git dssw ; echo not staged: && git dstw"
 
-	l    = log --max-count=31  --oneline --decorate --graph
+	l    = log --max-count=42  --oneline --decorate --graph
 	ll   = log                 --oneline --decorate --graph
-	ls   = log --max-count=31  --oneline --decorate --graph --stat
-	lsw  = log --max-count=31  --oneline --decorate --graph --stat=187
-	lG   = log --max-count=31  --oneline --decorate
-	lGs  = log --max-count=31  --oneline --decorate         --stat
-	lp   = log --max-count=31   --pretty --decorate --graph
-	lpG  = log --max-count=31   --pretty --decorate
-	lr   = log --max-count=31  --oneline --decorate --graph              --source            --remotes         HEAD
-	ldev = log --max-count=31  --oneline --decorate --graph              --source                              HEAD dev origin/dev
-	ld   = log --max-count=31  --oneline --decorate --graph              --source                              HEAD develop origin/develop
-	lb   = log --max-count=31  --oneline --decorate --graph              --source --branches                   HEAD
-	lbr  = log --max-count=31  --oneline --decorate --graph              --source --branches --remotes         HEAD
-	lbt  = log --max-count=31  --oneline --decorate --graph              --source --branches           --tags  HEAD
-	lbd  = log --max-count=31  --oneline --decorate --graph --date-order --source --branches --remotes --tags  HEAD
-	lbn  = log --max-count=31  --oneline --decorate --graph                       --branches           --tags  HEAD
-	lbrn = log --max-count=31  --oneline --decorate --graph                       --branches --remotes --tags  HEAD
-	lbs  = log --max-count=31  --oneline --decorate --graph --stat       --source --branches --remotes --tags  HEAD
-	lbsn = log --max-count=31  --oneline --decorate --graph --stat                --branches --remotes --tags  HEAD
-	lbsw = log --max-count=31  --oneline --decorate --graph --stat=187   --source --branches --remotes --tags  HEAD
-	lbG  = log --max-count=31  --oneline --decorate                      --source --branches --remotes --tags  HEAD
-	lpb  = log --max-count=31   --pretty --decorate --graph              --source --branches --remotes --tags  HEAD
-	lpbG = log --max-count=31   --pretty --decorate                      --source --branches --remotes --tags  HEAD
-	ldevl = log                --oneline --decorate --graph              --source                              HEAD dev origin/dev
-	ldl   = log                --oneline --decorate --graph              --source                              HEAD develop origin/develop
-	lbl   = log                --oneline --decorate --graph              --source --branches                   HEAD
-	lbrl  = log                --oneline --decorate --graph              --source --branches --remotes         HEAD
-	lbtl  = log                --oneline --decorate --graph              --source --branches           --tags  HEAD
-	lbnl  = log                --oneline --decorate --graph                       --branches --remotes --tags  HEAD
-	lbsl  = log                --oneline --decorate --graph --stat       --source --branches --remotes --tags  HEAD
-	lbsnl = log                --oneline --decorate --graph --stat                --branches --remotes --tags  HEAD
-	lbswl = log                --oneline --decorate --graph --stat=187   --source --branches --remotes --tags  HEAD
-	lbGl  = log                --oneline --decorate                      --source --branches --remotes --tags  HEAD
-	lpbl  = log                 --pretty --decorate --graph              --source --branches --remotes --tags  HEAD
-	lpbGl = log                 --pretty --decorate                      --source --branches --remotes --tags  HEAD
+	ls   = log --max-count=42  --oneline --decorate --graph --stat
+	lsw  = log --max-count=42  --oneline --decorate --graph --stat=187
+	lG   = log --max-count=42  --oneline --decorate
+	lGs  = log --max-count=42  --oneline --decorate         --stat
+	lp   = log --max-count=42   --pretty --decorate --graph
+	lpG  = log --max-count=42   --pretty --decorate
+	lr   = log --max-count=42  --oneline --decorate --graph                                  --remotes         HEAD
+	ldev = log --max-count=42  --oneline --decorate --graph                                                    HEAD dev origin/dev
+	ld   = log --max-count=42  --oneline --decorate --graph                                                    HEAD develop origin/develop
+	lb   = log --max-count=42  --oneline --decorate --graph                       --branches                   HEAD
+	lbr  = log --max-count=42  --oneline --decorate --graph                       --branches --remotes         HEAD
+	lbt  = log --max-count=42  --oneline --decorate --graph                       --branches           --tags  HEAD
+	lbd  = log --max-count=42  --oneline --decorate --graph --date-order          --branches --remotes --tags  HEAD
+	lbS  = log --max-count=42  --oneline --decorate --graph              --source --branches           --tags  HEAD
+	lbrS = log --max-count=42  --oneline --decorate --graph              --source --branches --remotes --tags  HEAD
+	lbs  = log --max-count=42  --oneline --decorate --graph --stat                --branches --remotes --tags  HEAD
+	lbsn = log --max-count=42  --oneline --decorate --graph --stat                --branches --remotes --tags  HEAD
+	lbsw = log --max-count=42  --oneline --decorate --graph --stat=187            --branches --remotes --tags  HEAD
+	lbG  = log --max-count=42  --oneline --decorate                               --branches --remotes --tags  HEAD
+	lpb  = log --max-count=42   --pretty --decorate --graph                       --branches --remotes --tags  HEAD
+	lpbG = log --max-count=42   --pretty --decorate                               --branches --remotes --tags  HEAD
+	ldevl = log                --oneline --decorate --graph                                                    HEAD dev origin/dev
+	ldl   = log                --oneline --decorate --graph                                                    HEAD develop origin/develop
+	lbl   = log                --oneline --decorate --graph                       --branches                   HEAD
+	lbrl  = log                --oneline --decorate --graph                       --branches --remotes         HEAD
+	lbtl  = log                --oneline --decorate --graph                       --branches           --tags  HEAD
+	lbSl  = log                --oneline --decorate --graph              --source --branches --remotes --tags  HEAD
+	lbsl  = log                --oneline --decorate --graph --stat                --branches --remotes --tags  HEAD
+	lbsSl = log                --oneline --decorate --graph --stat       --source --branches --remotes --tags  HEAD
+	lbswl = log                --oneline --decorate --graph --stat=187            --branches --remotes --tags  HEAD
+	lbGl  = log                --oneline --decorate                               --branches --remotes --tags  HEAD
+	lpbl  = log                 --pretty --decorate --graph                       --branches --remotes --tags  HEAD
+	lpbGl = log                 --pretty --decorate                               --branches --remotes --tags  HEAD
 	lt    = log                --oneline                                                                         --simplify-by-decoration
 	ltb   = log                --oneline            --graph                       --branches                     --simplify-by-decoration
 	ltt   = log                --oneline            --graph                                            --tags    --simplify-by-decoration
@@ -124,6 +126,8 @@
 	# show graph of current branch and its upstream down to their merge base, but not more
 	ml    = ! git log --oneline --decorate --graph            HEAD main ^$(git merge-base HEAD main)^
 	mrl   = ! git log --oneline --decorate --graph            HEAD main ^$(git merge-base HEAD main)^ origin/main
+	dl    = ! git log --oneline --decorate --graph            HEAD dev ^$(git merge-base HEAD dev)^
+	drl   = ! git log --oneline --decorate --graph            HEAD dev ^$(git merge-base HEAD dev)^ origin/dev
 	ul    = ! git log --oneline --decorate --graph            HEAD @{u} ^$(git merge-base HEAD @{u})^
 	uls   = ! git log --oneline --decorate --graph --stat     HEAD @{u} ^$(git merge-base HEAD @{u})^
 	ulsw  = ! git log --oneline --decorate --graph --stat=187 HEAD @{u} ^$(git merge-base HEAD @{u})^
@@ -131,6 +135,8 @@
 	fl    = ! git log --oneline --decorate --graph            HEAD FETCH_HEAD ^$(git merge-base HEAD FETCH_HEAD)^
 	fls   = ! git log --oneline --decorate --graph --stat     HEAD FETCH_HEAD ^$(git merge-base HEAD FETCH_HEAD)^
 	flsw  = ! git log --oneline --decorate --graph --stat=187 HEAD FETCH_HEAD ^$(git merge-base HEAD FETCH_HEAD)^
+
+	list-remote-branches-fancy = ! git for-each-ref --sort=committerdate --format='%(refname:short) *  %(authorname) * %(committerdate:relative)' refs/remotes/ | column -t -s '*'
 
 	us = up-stat
 	usd = up-stat-dir
@@ -142,7 +148,17 @@
 	ffl = ! git fetch && git fl
 	flb = ! git fetch && git lb
 	flbr = ! git fetch && git lbr
+	fdrl = ! git fetch && git drl
 	fmrl = ! git fetch && git mrl
+
+	list-commits-in-branch-from-main = log main...HEAD --oneline --no-decorate --reverse
+	list-commits-in-branch-from-main-pretty = ! git list-commits-in-branch-from-main | cut -d ' ' --complement -f 1 | xargs -i echo '* {} '
+	list-modified-files-in-branch-from-main = diff main...HEAD --name-only
+	list-modified-files-in-branch-from-main-and-stage = ! git diff main...HEAD --name-only | xargs -n 1 git add --update
+
+	list-lost-autostashes = ! git log --pretty='%cr: %h %s' $(git fsck --no-reflog | grep '^dangling commit' | cut -f3 -d\\ ) | grep ': autostash$'
+
+	log-filter-for-token = log -p -S
 
 	sl  = stash list
 	stl = stash list
@@ -162,6 +178,7 @@
 	ri   = rebase --interactive
 	riaa = rebase --interactive --autostash --autosquash
 	riaa7 = riaa HEAD^^^^^^^
+	riaa-branch-of-main = ! git riaa $(git merge-base HEAD main)
 	ra   = rebase               --autostash
 	raa  = rebase               --autostash --autosquash
 	rc   = rebase --continue
@@ -212,7 +229,10 @@
 	cod = checkout --detach
 
 	sw = switch
+	sw-st-pll-upd-main = ! git stash && git sw main && git pull --ff && git stp
 	sw-st-pll-upd-dev = ! git stash && git sw dev && git pull --ff && git stp
+	sw-main-pull = ! git sw main && git pull --ff
+	sw-main-pull-sw-back-ml = ! git sw main && git pull --ff && git sw - && git ml
 	sw-dev-pull = ! git sw dev && git pull --ff
 	sw-develop-pull = ! git sw develop && git pull --ff
 	cp = cherry-pick
@@ -223,6 +243,10 @@
 	suri = submodule update --recursive --init
 
 	fetch = fetch -v
+
+	blame-ignore-whitespace1 = blame -w -C
+	blame-ignore-whitespace2 = blame -w -C -C
+	blame-ignore-whitespace3 = blame -w -C -C -C
 
 	# ignoring known files:
 	# git update-index --skip-worktree path/file.cfg
@@ -269,6 +293,7 @@
 	pfus = !" git fetchp && git up-stat || echo ERROR pfus"
 	pullp = !" git proxy-update && git pull || echo ERROR pushp"
 	pushp = !" git proxy-update && git push || echo ERROR pullp"
+	push-fl = push --force-with-lease
 
 	#branchupdate = ! git checkout $1  &&  git pull --rebase y $2 y && echo
 	#branchupdate = ! bash -c git_branch_update
